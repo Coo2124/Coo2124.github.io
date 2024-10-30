@@ -1,22 +1,33 @@
 <!DOCTYPE html>
-
-<html>
-
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-<meta charset="utf-8" />
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
-
 
 
 
 <title>NY NOAA Weather Data Dashboard</title>
 
+<meta property="og:title" content="NY NOAA Weather Data Dashboard" />
+
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+
+<link rel="icon" href="data:image/x-icon;" type="image/x-icon">
+
+
+<script type="text/javascript">
+window.FlexDashboardComponents = [];
+</script>
+
+<script id="flexdashboard-navbar" type="application/json">
+[{"title":"Source Code","icon":"fa-code","href":"source_embed","align":"right"}]
+</script>
 <script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -29,9 +40,16 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/stickytableheaders-0.1.19/jquery.stickytableheaders.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/value-box-accent-static-0.6.2/theme-cosmo-value-box.css" rel="stylesheet" />
+<link href="site_libs/featherlight-1.3.5/featherlight.min.css" rel="stylesheet" />
+<script src="site_libs/featherlight-1.3.5/featherlight.min.js"></script>
+<link href="site_libs/prism-1.4.1/prism.css" rel="stylesheet" />
+<script src="site_libs/prism-1.4.1/prism.js"></script>
+<link href="site_libs/flexdashboard-css-0.6.2/flexdashboard.min.css" rel="stylesheet" />
+<link href="site_libs/flexdashboard-css-0.6.2/theme-cosmo.css" rel="stylesheet" />
 <link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
 <script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
@@ -40,193 +58,104 @@
 <script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 <link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
-
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+/*
+  CSS for flexdashboard.js' use of Sly(). The sizing/position of this CSS needs to be
+  applied _before_ flexdashboard.js initializes, which is why this CSS has been pulled
+  out from flexdashboard.scss and inlined in the document's head.
+*/
 
-<style type="text/css">code{white-space: pre;}</style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
-}
-</script>
-
-
-
-
-
-
-
-
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-img {
-  max-width:100%;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-.html-widget {
-  margin-bottom: 20px;
-}
-button.code-folding-btn:focus {
+.storyboard-nav button {
+  background: transparent;
+  border: 0;
+  opacity: .3;
   outline: none;
-}
-summary {
-  display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
-}
-pre code {
   padding: 0;
 }
-</style>
 
+.storyboard-nav button:hover,
+.storyboard-nav button:hover {
+  opacity: .5;
+}
 
-<style type="text/css">
-.dropdown-submenu {
-  position: relative;
+.storyboard-nav button:disabled,
+.storyboard-nav button:disabled {
+  opacity: .1;
 }
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
+
+.storyboard-nav .sbnext,
+.storyboard-nav .sbprev {
+  float: left;
+  width: 2%;
+  height: 120px;
 }
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
+
+.storyboard-nav .sbprev {
+  text-align: left;
+  width: 2%;
 }
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
+
+.storyboard-nav .sbnext {
   float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #adb5bd;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
-}
-</style>
-
-<script type="text/javascript">
-// manage active state of menu based on current page
-$(document).ready(function () {
-  // active menu anchor
-  href = window.location.pathname
-  href = href.substr(href.lastIndexOf('/') + 1)
-  if (href === "")
-    href = "index.html";
-  var menuAnchor = $('a[href="' + href + '"]');
-
-  // mark the anchor link active (and if it's in a dropdown, also mark that active)
-  var dropdown = menuAnchor.closest('li.dropdown');
-  if (window.bootstrap) { // Bootstrap 4+
-    menuAnchor.addClass('active');
-    dropdown.find('> .dropdown-toggle').addClass('active');
-  } else { // Bootstrap 3
-    menuAnchor.parent().addClass('active');
-    dropdown.addClass('active');
-  }
-
-  // Navbar adjustments
-  var navHeight = $(".navbar").first().height() + 15;
-  var style = document.createElement('style');
-  var pt = "padding-top: " + navHeight + "px; ";
-  var mt = "margin-top: -" + navHeight + "px; ";
-  var css = "";
-  // offset scroll position for anchor links (for fixed navbar)
-  for (var i = 1; i <= 6; i++) {
-    css += ".section h" + i + "{ " + pt + mt + "}\n";
-  }
-  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
-  document.head.appendChild(style);
-});
-</script>
-
-<!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  text-align: right;
+  margin-right: 8px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+.storyboard-nav .sbframelist {
+  margin: 0 auto;
+  width: 94%;
+  height: 120px;
+  overflow: hidden;
+  text-shadow: none;
+  margin-bottom: 8px;
 }
 
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
-  border: none;
+.storyboard-nav .sbframelist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
+.storyboard-nav .sbframelist ul li {
+  float: left;
+  width: 270px;
+  height: 100%;
+  padding: 10px 10px 10px 10px;
+  margin-right: 8px;
+  text-align: left;
+  cursor: pointer;
 }
 
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-  background-color: transparent;
+.storyboard-nav .sbframelist ul li:last-child {
+  margin-right: 0px;
 }
 
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
+.sbframe-commentary {
+  width: 300px;
 }
 
-.tabset-dropdown > .nav-tabs > li {
+.sbframe-commentary ul {
+  padding-left: 22px;
+}
+
+.sbframe.active {
+  display: flex;
+}
+
+.sbframe:not(.active) {
   display: none;
 }
+@media only screen and (min-width: 768px) {
+html, body {
+  height: 100%;
+}
+
+#dashboard-container {
+  height: 100%;
+}
+}
 </style>
-
-<!-- code folding -->
-
 
 
 
@@ -234,89 +163,1810 @@ $(document).ready(function () {
 
 <body>
 
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<div class="container-fluid">
+<div class="navbar-header">
 
-<div class="container-fluid main-container">
+<span class="navbar-logo pull-left">
+  
+</span>
+<span class="navbar-brand">
+  NY NOAA Weather Data Dashboard
+  <span class="navbar-author">
+        </span>
+</span>
 
-
-
-
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">Home</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="Resume.html">Resume</a>
-</li>
-<li>
-  <a href="plotly.html">plotly</a>
-</li>
-<li>
-  <a href="Dashboard.html">Dashboard</a>
-</li>
-<li>
-  <a href="mailto:&lt;coo2124@cumc.columbia.edu&gt;">
-    <span class="fa fa-envelope fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="http://github.com/Coo2124/">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="https://www.linkedin.com/in/christianaodewumi">
-    <span class="fa fa-linkedin fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
-
-<div id="header">
-
-
-
-<h1 class="title toc-ignore">NY NOAA Weather Data Dashboard</h1>
+<button id="navbar-button" type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
 
 </div>
+<div id="navbar" class="navbar-collapse collapse">
+<ul class="nav navbar-nav navbar-left">
+</ul>
+<ul class="nav navbar-nav navbar-right">
+</ul>
+</div><!--/.nav-collapse-->
+</div><!--/.container-->
+</div><!--/.navbar-->
 
+<script type="text/javascript">
+
+
+var FlexDashboard = (function () {
+
+  // initialize options
+  var _options = {};
+
+  var FlexDashboard = function() {
+
+    // default options
+    _options = $.extend(_options, {
+      theme: "cosmo",
+      fillPage: false,
+      orientation: 'columns',
+      storyboard: false,
+      defaultFigWidth: 576,
+      defaultFigHeight: 461,
+      defaultFigWidthMobile: 360,
+      defaultFigHeightMobile: 461,
+      isMobile: false,
+      isPortrait: false,
+      resize_reload: true
+    });
+  };
+
+  function init(options) {
+
+    // extend default options
+    $.extend(true, _options, options);
+
+    // add ids to sections that don't have them (pandoc won't assign ids
+    // to e.g. sections with titles consisting of only chinese characters)
+    var nextId = 1;
+    $('.level1:not([id]),.level2:not([id]),.level3:not([id])').each(function() {
+      $(this).attr('id', 'dashboard-' + nextId++);
+    });
+
+    // find navbar items
+    var navbarItems = $('#flexdashboard-navbar');
+    if (navbarItems.length)
+      navbarItems = JSON.parse(navbarItems.html());
+    addNavbarItems(navbarItems);
+
+    // find the main dashboard container
+    var dashboardContainer = $('#dashboard-container');
+
+    // resolve mobile classes
+    resolveMobileClasses(dashboardContainer);
+
+    // one time global initialization for components
+    componentsInit(dashboardContainer);
+
+    // look for a global sidebar
+    var globalSidebar = dashboardContainer.find(".section.level1.sidebar");
+    if (globalSidebar.length > 0) {
+
+      // global layout for fullscreen displays
+      if (!isMobilePhone()) {
+
+         // hoist it up to the top level
+         globalSidebar.insertBefore(dashboardContainer);
+
+         // lay it out (set width/positions)
+         layoutSidebar(globalSidebar, dashboardContainer);
+
+      // tuck sidebar into first page for mobile phones
+      } else {
+
+        // convert it into a level3 section
+        globalSidebar.removeClass('sidebar');
+        globalSidebar.removeClass('level1');
+        globalSidebar.addClass('level3');
+        var h1 = globalSidebar.children('h1');
+        var h3 = $('<h3></h3>');
+        h3.append(h1.contents());
+        h3.insertBefore(h1);
+        h1.detach();
+
+        // move it into the first page
+        var page = dashboardContainer.find('.section.level1').first();
+        if (page.length > 0)
+          page.prepend(globalSidebar);
+      }
+    }
+
+    // look for pages to layout
+    var pages = $('div.section.level1');
+    if (pages.length > 0) {
+
+        // find the navbar and collapse on clicked
+        var navbar = $('#navbar');
+        navbar.on("click", "a[data-toggle!=dropdown]", null, function () {
+           navbar.collapse('hide');
+        });
+
+        // envelop the dashboard container in a tab content div
+        dashboardContainer.wrapInner('<div class="tab-content"></div>');
+
+        pages.each(function(index) {
+
+          // lay it out
+          layoutDashboardPage($(this));
+
+          // add it to the navbar
+          addToNavbar($(this), index === 0);
+
+        });
+
+    } else {
+
+      // remove the navbar and navbar button if we don't
+      // have any navbuttons
+      if (navbarItems.length === 0) {
+        $('#navbar').remove();
+        $('#navbar-button').remove();
+      }
+
+      // add the storyboard class if requested
+      if (_options.storyboard)
+        dashboardContainer.addClass('storyboard');
+
+      // layout the entire page
+      layoutDashboardPage(dashboardContainer);
+    }
+
+    // if we are in shiny we need to trigger a window resize event to
+    // force correct layout of shiny-bound-output elements
+    if (isShinyDoc())
+      $(window).trigger('resize');
+
+    // make main components visible
+    $('.section.sidebar').css('visibility', 'visible');
+    dashboardContainer.css('visibility', 'visible');
+
+    // handle location hash
+    handleLocationHash();
+
+    // intialize prism highlighting
+    initPrismHighlighting();
+
+    // record mobile and orientation state then register a handler
+    // to refresh if resize_reload is set to true and it changes
+    _options.isMobile = isMobilePhone();
+    _options.isPortrait = isPortrait();
+    if (_options.resize_reload) {
+      $(window).on('resize', function() {
+        if (_options.isMobile !== isMobilePhone() ||
+            _options.isPortrait !== isPortrait()) {
+          window.location.reload();
+        }
+      });
+    } else {
+      // if in desktop mode and resizing to mobile, make sure the heights are 100%
+      // This enforces what `fillpage.css` does for "wider" pages.
+      // Since we are not reloading once the page becomes small, we need to force the height to 100%
+      // This is a new situation introduced when `_options.resize_reload` is `false`
+      if (! _options.isMobile) {
+        // only add if `fillpage.css` was added in the first place
+        if (_options.fillPage) {
+          // fillpage.css
+          $("html,body,#dashboard").css("height", "100%");
+        }
+      }
+    }
+    // trigger layoutcomplete event
+    dashboardContainer.trigger('flexdashboard:layoutcomplete');
+  }
+
+  function resolveMobileClasses(dashboardContainer) {
+     // add top level layout class
+    dashboardContainer.addClass(isMobilePhone() ? 'mobile-layout' :
+                                                  'desktop-layout');
+
+    // look for .mobile sections and add .no-mobile to their peers
+    var mobileSections = $('.section.mobile');
+    mobileSections.each(function() {
+       var id = $(this).attr('id');
+       var nomobileId = id.replace(/-\d+$/, '');
+       $('#' + nomobileId).addClass('no-mobile');
+    });
+  }
+
+  function addNavbarItems(navbarItems) {
+
+    var navbarLeft = $('ul.navbar-left');
+    var navbarRight = $('ul.navbar-right');
+
+    for (var i = 0; i<navbarItems.length; i++) {
+
+      // get the item
+      var item = navbarItems[i];
+
+      // determine the container
+      var container = null;
+      if (item.align === "left")
+        container = navbarLeft;
+      else
+        container = navbarRight;
+
+      // navbar menu if we have multiple items
+      if (item.items) {
+        var menu = navbarMenu(null, item.icon, item.title, container);
+        for (var j = 0; j<item.items.length; j++) {
+          var subItem = item.items[j];
+          var li = $('<li></li>');
+          var a = navbarLink(subItem.icon, subItem.title, subItem.href, subItem.target);
+          a.removeClass("nav-link").addClass("dropdown-item");
+          li.append(a);
+          menu.append(li);
+        }
+      } else {
+        var li = $('<li class="nav-item"></li>');
+        li.append(navbarLink(item.icon, item.title, item.href, item.target));
+        container.append(li);
+      }
+    }
+  }
+
+  // create or get a reference to an existing dropdown menu
+  function navbarMenu(id, icon, title, container) {
+    var existingMenu = [];
+    if (id)
+      existingMenu = container.children('#' + id);
+    if (existingMenu.length > 0) {
+      return existingMenu.children('ul');
+    } else {
+      var li = $('<li class="nav-item"></li>');
+      if (id)
+        li.attr('id', id);
+      li.addClass('dropdown');
+      // auto add "Share" title on mobile if necessary
+      if (!title && icon && (icon === "fa-share-alt") && isMobilePhone())
+        title = "Share";
+      if (title) {
+        title = title + ' <span class="caret"></span>';
+      }
+      var a = navbarLink(icon, title, "#");
+      a.addClass('dropdown-toggle');
+      a.attr('data-toggle', 'dropdown');
+      a.attr('data-bs-toggle', 'dropdown');
+      a.attr('role', 'button');
+      a.attr('aria-expanded', 'false');
+      li.append(a);
+      var ul = $('<ul class="dropdown-menu"></ul>');
+      ul.attr('role', 'menu');
+      li.append(ul);
+      container.append(li);
+      return ul;
+    }
+  }
+
+  function addToNavbar(page, active) {
+
+    // capture the id and data-icon attribute (if any)
+    var id = page.attr('id');
+    var icon = page.attr('data-icon');
+    var navmenu = page.attr('data-navmenu');
+    var navmenuIcon = page.attr('data-navmenu-icon');
+
+    // get hidden state (transfer this to navbar)
+    var hidden = page.hasClass('hidden');
+    page.removeClass('hidden');
+
+    // sanitize the id for use with bootstrap tabs
+    id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
+    page.attr('id', id);
+
+    // get the wrapper
+    var wrapper = page.closest('.dashboard-page-wrapper');
+
+    // move the id to the wrapper
+    page.removeAttr('id');
+    wrapper.attr('id', id);
+
+    // add the tab-pane class to the wrapper
+    wrapper.addClass('tab-pane');
+
+    // get a reference to the h1, discover its inner contens, then detach it
+    var h1 = wrapper.find('h1').first();
+    var title = h1.contents();
+    h1.detach();
+
+    // create a navbar item
+    var li = $('<li></li>');
+    var a = navbarLink(icon, title, '#' + id);
+    a.attr('data-toggle', 'tab');
+    a.attr('data-bs-toggle', 'tab');
+    li.append(a);
+
+    // add it to the navbar (or navbar menu if specified)
+    var container = $('ul.navbar-left');
+    if (navmenu) {
+      var menuId = navmenu.replace(/\s+/g, '');
+      var menu = navbarMenu(menuId, navmenuIcon, navmenu, container);
+      li.find("> a").removeClass("nav-link").addClass("dropdown-item");
+      menu.append(li);
+    } else {
+      li.addClass("nav-item")
+      container.append(li);
+    }
+
+    // mark active tab and corresponding nav menu item
+    if (active)
+      $(a).tab("show");
+
+    // hide it if requested
+    if (hidden)
+      li.addClass('hidden');
+  }
+
+  function navbarLink(icon, title, href, target) {
+
+    var a = $('<a class="nav-link"></a>');
+    if (icon) {
+
+      // get the name of the icon set and icon
+      var dashPos = icon.indexOf("-");
+      var iconSet = null;
+      var iconSplit = icon.split(" ");
+      if (iconSplit.length > 1) {
+        iconSet = iconSplit[0];
+        icon = iconSplit.slice(1).join(" ");
+      } else {
+        iconSet = icon.substring(0, dashPos);
+      }
+      var iconName = icon.substring(dashPos + 1);
+
+      // create the icon
+      var iconElement = $('<span class="' + iconSet + ' ' + icon + '"></span>');
+      if (title)
+        iconElement.css('margin-right', '7px');
+      a.append(iconElement);
+      // if href is null see if we can auto-generate based on icon (e.g. social)
+      if (!href)
+        maybeGenerateLinkFromIcon(iconName, a);
+    }
+    if (title)
+      a.append(title);
+
+    // add the href.
+    if (href) {
+      if (href === "source_embed") {
+        a.attr('href', '#');
+        a.attr('data-featherlight', "#flexdashboard-source-code");
+        a.featherlight({
+            beforeOpen: function(event){
+              $('body').addClass('unselectable');
+            },
+            afterClose: function(event){
+              $('body').removeClass('unselectable');
+            }
+        });
+      } else {
+        a.attr('href', href);
+      }
+    }
+
+    // add the arget
+    if (target)
+      a.attr('target', target);
+
+    return a;
+  }
+
+  // auto generate a link from an icon name (e.g. twitter) when possible
+  function maybeGenerateLinkFromIcon(iconName, a) {
+
+     var serviceLinks = {
+      "twitter": "https://twitter.com/share?text=" + encodeURIComponent(document.title) + "&url="+encodeURIComponent(location.href),
+      "facebook": "https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(location.href),
+      "linkedin": "https://www.linkedin.com/shareArticle?mini=true&url="+encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title),
+      "pinterest": "https://pinterest.com/pin/create/link/?url="+encodeURIComponent(location.href) + "&description=" + encodeURIComponent(document.title)
+    };
+
+    var makeSocialLink = function(a, href) {
+      a.attr('href', '#');
+      a.on('click', function(e) {
+        e.preventDefault();
+        window.open(href);
+      });
+    };
+
+    $.each(serviceLinks, function(key, value) {
+      if (iconName.indexOf(key) !== -1)
+        makeSocialLink(a, value);
+    });
+  }
+
+  // layout a dashboard page
+  function layoutDashboardPage(page) {
+
+    // use a page wrapper so that free form content above the
+    // dashboard appears at the top rather than the side (as it
+    // would without the wrapper in a column orientation)
+    var wrapper = $('<div class="dashboard-page-wrapper"></div>');
+    page.wrap(wrapper);
+
+    // if there are no level2 or level3 headers synthesize a level3
+    // header to contain the (e.g. frame it, scroll container, etc.)
+    var headers = page.find('h2,h3');
+    if (headers.length === 0)
+      page.wrapInner('<div class="section level3"></div>');
+
+    // hoist up any content before level 2 or level 3 headers
+    var children = page.children();
+    children.each(function(index) {
+      if ($(this).hasClass('level2') || $(this).hasClass('level3'))
+        return false;
+      $(this).insertBefore(page);
+    });
+
+    // determine orientation and fillPage behavior for distinct media
+    var orientation, fillPage, storyboard;
+
+    // media: mobile phone
+    if (isMobilePhone()) {
+
+      // if there is a sidebar we need to ensure it's content
+      // is properly framed as an h3
+      var sidebar = page.find('.section.sidebar');
+      sidebar.removeClass('sidebar');
+      sidebar.wrapInner('<div class="section level3"></div>');
+      var h2 = sidebar.find('h2');
+      var h3 = $('<h3></h3>');
+      h3.append(h2.contents());
+      h3.insertBefore(h2);
+      h2.detach();
+
+      // wipeout h2 elements then enclose them in a single h2
+      var level2 = page.find('div.section.level2');
+      level2.each(function() {
+        level2.children('h2').remove();
+        level2.children().unwrap();
+      });
+      page.wrapInner('<div class="section level2"></div>');
+
+      // substitute mobile images
+      if (isPortrait()) {
+        var mobileFigures = $('img.mobile-figure');
+        mobileFigures.each(function() {
+          // get the src (might be base64 encoded)
+          var src = $(this).attr('src');
+
+          // find it's peer
+          var id = $(this).attr('data-mobile-figure-id');
+          var img = $('img[data-figure-id=' + id + "]");
+          img.attr('src', src)
+             .attr('width', _options.defaultFigWidthMobile)
+             .attr('height', _options.defaultFigHeightMobile);
+        });
+      }
+
+      // hoist storyboard commentary into it's own section
+      if (page.hasClass('storyboard')) {
+        var commentaryHR = page.find('div.section.level3 hr');
+        commentaryHR.each(function() {
+          var commentary = $(this).nextAll().detach();
+          var commentarySection = $('<div class="section level3"></div>');
+          commentarySection.append(commentary);
+          commentarySection.insertAfter($(this).closest('div.section.level3'));
+          $(this).remove();
+        });
+      }
+
+      // force a non full screen layout by columns
+      orientation = _options.orientation = 'columns';
+      fillPage = _options.fillPage = false;
+      storyboard = _options.storyboard = false;
+
+    // media: desktop
+    } else {
+
+      // determine orientation
+      orientation = page.attr('data-orientation');
+      if (orientation !== 'rows' && orientation != 'columns')
+        orientation = _options.orientation;
+
+      // determine storyboard mode
+      storyboard = page.hasClass('storyboard');
+
+      // fillPage based on options (force for storyboard)
+      fillPage = _options.fillPage || storyboard;
+
+      // handle sidebar
+      var sidebar = page.find('.section.level2.sidebar');
+      if (sidebar.length > 0)
+        layoutSidebar(sidebar, page);
+    }
+
+    // give it and it's parent divs height: 100% if we are in fillPage mode
+    if (fillPage) {
+      page.addClass('vertical-layout-fill');
+      page.css('height', '100%');
+      page.parents('div').css('height', '100%');
+    } else {
+      page.addClass('vertical-layout-scroll');
+    }
+
+    // perform the layout
+    if (storyboard)
+      layoutPageAsStoryboard(page);
+    else if (orientation === 'rows')
+      layoutPageByRows(page, fillPage);
+    else if (orientation === 'columns')
+      layoutPageByColumns(page, fillPage);
+  }
+
+  function layoutSidebar(sidebar, content) {
+
+    // get it out of the header hierarchy
+    sidebar = sidebar.first();
+    if (sidebar.hasClass('level1')) {
+      sidebar.removeClass('level1');
+      sidebar.children('h1').remove();
+    } else if (sidebar.hasClass('level2')) {
+      sidebar.removeClass('level2');
+      sidebar.children('h2').remove();
+    }
+
+    // determine width
+    var sidebarWidth = isTablet() ? 220 : 250;
+    var dataWidth = parseInt(sidebar.attr('data-width'));
+    if (dataWidth)
+      sidebarWidth = dataWidth;
+
+    // set the width and shift the page right to accomodate the sidebar
+    sidebar.css('width', sidebarWidth + 'px');
+    content.css('padding-left', sidebarWidth + 'px');
+
+    // wrap it's contents in a form
+    sidebar.wrapInner($('<form></form>'));
+  }
+
+  function layoutPageAsStoryboard(page) {
+
+    // create storyboard navigation
+    var nav = $('<div class="storyboard-nav"></div>');
+
+    // add navigation buttons
+    var prev = $('<button class="sbprev"><i class="fa fa-angle-left"></i></button>');
+    nav.append(prev);
+    var next= $('<button class="sbnext"><i class="fa fa-angle-right"></i></button>');
+    nav.append(next);
+
+    // add navigation frame
+    var frameList = $('<div class="sbframelist"></div>');
+    nav.append(frameList);
+    var ul = $('<ul></ul>');
+    frameList.append(ul);
+
+     // find all the level3 sections (those are the storyboard frames)
+    var frames = page.find('div.section.level3');
+    frames.each(function() {
+
+      // mark it
+      $(this).addClass('sbframe');
+
+      // divide it into chart content and (optional) commentary
+      $(this).addClass('dashboard-column-orientation');
+
+      // stuff the chart into it's own div w/ flex
+      $(this).wrapInner('<div class="sbframe-component"></div>');
+      setFlex($(this), 1);
+      var frame = $(this).children('.sbframe-component');
+
+      // extract the title from the h3
+      var li = $('<li></li>');
+      var h3 = frame.children('h3');
+      li.append(h3.contents());
+      h3.detach();
+      ul.append(li);
+
+      // extract commentary
+      var hr = frame.children('hr');
+      if (hr.length) {
+        var commentary = hr.nextAll().detach();
+        hr.remove();
+        var commentaryFrame = $('<div class="sbframe-commentary"></div>');
+        commentaryFrame.addClass('flowing-content-shim');
+        commentaryFrame.addClass('flowing-content-container');
+        commentaryFrame.append(commentary);
+        $(this).append(commentaryFrame);
+
+        // look for a data-commentary-width attribute
+        var commentaryWidth = $(this).attr('data-commentary-width');
+        if (commentaryWidth)
+          commentaryFrame.css('width', commentaryWidth + 'px');
+      }
+
+      // layout the chart (force flex)
+      var result = layoutChart(frame, true);
+
+      // ice the notes if there are none
+      if (!result.notes)
+        frame.find('.chart-notes').remove();
+
+      // set flex on chart
+      setFlex(frame, 1);
+    });
+
+    // create a div to hold all the frames
+    var frameContent = $('<div class="sbframe-content"></div>');
+    frameContent.addClass('dashboard-row-orientation');
+    frameContent.append(frames.detach());
+
+    // row orientation to stack nav and frame content
+    page.addClass('dashboard-row-orientation');
+    page.append(nav);
+    page.append(frameContent);
+    setFlex(frameContent, 1);
+
+    // initialize sly
+    var sly = new Sly(frameList, {
+    		horizontal: true,
+    		itemNav: 'basic',
+    		smart: true,
+    		activateOn: 'click',
+    		startAt: 0,
+    		scrollBy: 1,
+    		activatePageOn: 'click',
+    		speed: 200,
+    		moveBy: 600,
+    		dragHandle: true,
+    		dynamicHandle: true,
+    		clickBar: true,
+    		keyboardNavBy: 'items',
+    		next: next,
+    		prev: prev
+    	}).init();
+
+    // make first frame active
+    frames.removeClass('active');
+    frames.first().addClass('active');
+
+    // subscribe to frame changed events
+    sly.on('active', function (eventName, itemIndex) {
+      frames.removeClass('active');
+      frames.eq(itemIndex).addClass('active')
+                          .trigger('shown');
+    });
+  }
+
+  function layoutPageByRows(page, fillPage) {
+
+    // row orientation
+    page.addClass('dashboard-row-orientation');
+
+    // find all the level2 sections (those are the rows)
+    var rows = page.find('div.section.level2');
+
+    // if there are no level2 sections then treat the
+    // entire page as if it's a level 2 section
+    if (rows.length === 0) {
+      page.wrapInner('<div class="section level2"></div>');
+      rows = page.find('div.section.level2');
+    }
+
+    rows.each(function () {
+
+      // flags
+      var haveNotes = false;
+      var haveFlexHeight = true;
+
+      // remove the h2
+      $(this).children('h2').remove();
+
+      // check for a tabset
+      var isTabset = $(this).hasClass('tabset');
+      if (isTabset)
+        layoutTabset($(this));
+
+      // give it row layout semantics if it's not a tabset
+      if (!isTabset)
+        $(this).addClass('dashboard-row');
+
+      // find all of the level 3 subheads
+      var columns = $(this).find('div.section.level3');
+
+      // determine figureSizes sizes
+      var figureSizes = chartFigureSizes(columns);
+
+      // fixup the columns
+      columns.each(function(index) {
+
+        // layout the chart (force flex if we are in a tabset)
+        var result = layoutChart($(this), isTabset);
+
+        // update flexHeight state
+        if (!result.flex)
+          haveFlexHeight = false;
+
+        // update state
+        if (result.notes)
+          haveNotes = true;
+
+        // set the column flex based on the figure width
+        // (value boxes will just get the default figure width)
+        var chartWidth = figureSizes[index].width;
+        setFlex($(this), chartWidth + ' ' + chartWidth + ' 0px');
+
+      });
+
+      // remove empty chart note divs
+      if (isTabset)
+        $(this).find('.chart-notes').filter(function() {
+            return $(this).html() === "&nbsp;";
+        }).remove();
+      if (!haveNotes)
+        $(this).find('.chart-notes').remove();
+
+       // make it a flexbox row
+      if (haveFlexHeight)
+        $(this).addClass('dashboard-row-flex');
+
+      // now we can set the height on all the wrappers (based on maximum
+      // figure height + room for title and notes, or data-height on the
+      // container if specified). However, don't do this if there is
+      // no flex on any of the constituent columns
+      var flexHeight = null;
+      var dataHeight = parseInt($(this).attr('data-height'));
+      if (dataHeight)
+        flexHeight = adjustedHeight(dataHeight, columns.first());
+      else if (haveFlexHeight)
+        flexHeight = maxChartHeight(figureSizes, columns);
+      if (flexHeight) {
+        if (fillPage)
+          setFlex($(this), flexHeight + ' ' + flexHeight + ' 0px');
+        else {
+          $(this).css('height', flexHeight + 'px');
+          setFlex($(this), '0 0 ' + flexHeight + 'px');
+        }
+      }
+
+    });
+  }
+
+  function layoutPageByColumns(page, fillPage) {
+
+    // column orientation
+    page.addClass('dashboard-column-orientation');
+
+    // find all the level2 sections (those are the columns)
+    var columns = page.find('div.section.level2');
+
+    // if there are no level2 sections then treat the
+    // entire page as if it's a level 2 section
+    if (columns.length === 0) {
+      page.wrapInner('<div class="section level2"></div>');
+      columns = page.find('div.section.level2');
+    }
+
+    // layout each column
+    columns.each(function (index) {
+
+      // remove the h2
+      $(this).children('h2').remove();
+
+      // make it a flexbox column
+      $(this).addClass('dashboard-column');
+
+      // check for a tabset
+      var isTabset = $(this).hasClass('tabset');
+      if (isTabset)
+        layoutTabset($(this));
+
+      // find all the h3 elements
+      var rows = $(this).find('div.section.level3');
+
+      // get the figure sizes for the rows
+      var figureSizes = chartFigureSizes(rows);
+
+      // column flex is the max row width (or data-width if specified)
+      var flexWidth;
+      var dataWidth = parseInt($(this).attr('data-width'));
+      if (dataWidth)
+        flexWidth = dataWidth;
+      else
+        flexWidth = maxChartWidth(figureSizes);
+      setFlex($(this), flexWidth + ' ' + flexWidth + ' 0px');
+
+      // layout each chart
+      rows.each(function(index) {
+
+        // perform the layout
+        var result = layoutChart($(this), false);
+
+        // ice the notes if there are none
+        if (!result.notes)
+          $(this).find('.chart-notes').remove();
+
+        // set flex height based on figHeight, then adjust
+        if (result.flex) {
+          var chartHeight = figureSizes[index].height;
+          chartHeight = adjustedHeight(chartHeight, $(this));
+          if (fillPage)
+            setFlex($(this), chartHeight + ' ' + chartHeight + ' 0px');
+          else {
+            $(this).css('height', chartHeight + 'px');
+            setFlex($(this), chartHeight + ' ' + chartHeight + ' ' + chartHeight + 'px');
+          }
+        }
+      });
+    });
+  }
+
+  function chartFigureSizes(charts) {
+
+    // sizes
+    var figureSizes = new Array(charts.length);
+
+    // check each chart
+    charts.each(function(index) {
+
+      // start with default
+      figureSizes[index] = {
+        width: _options.defaultFigWidth,
+        height: _options.defaultFigHeight
+      };
+
+      // look for data-height or data-width then knit options
+      var dataWidth = parseInt($(this).attr('data-width'));
+      var dataHeight = parseInt($(this).attr('data-height'));
+      var knitrOptions = $(this).find('.knitr-options:first');
+      var knitrWidth, knitrHeight;
+      if (knitrOptions) {
+        knitrWidth = parseInt(knitrOptions.attr('data-fig-width'));
+        knitrHeight =  parseInt(knitrOptions.attr('data-fig-height'));
+      }
+
+      // width
+      if (dataWidth)
+        figureSizes[index].width = dataWidth;
+      else if (knitrWidth)
+        figureSizes[index].width = knitrWidth;
+
+      // height
+      if (dataHeight)
+        figureSizes[index].height = dataHeight;
+      else if (knitrHeight)
+        figureSizes[index].height = knitrHeight;
+    });
+
+    // return sizes
+    return figureSizes;
+  }
+
+  function maxChartHeight(figureSizes, charts) {
+
+    // first compute the maximum height
+    var maxHeight = _options.defaultFigHeight;
+    for (var i = 0; i<figureSizes.length; i++)
+      if (figureSizes[i].height > maxHeight)
+        maxHeight = figureSizes[i].height;
+
+    // now add offests for chart title and chart notes
+    if (charts.length)
+      maxHeight = adjustedHeight(maxHeight, charts.first());
+
+    return maxHeight;
+  }
+
+  function adjustedHeight(height, chart) {
+    if (chart.length > 0) {
+      var chartTitle = chart.find('.chart-title');
+      if (chartTitle.length)
+        height += chartTitle.first().outerHeight();
+      var chartNotes = chart.find('.chart-notes');
+      if (chartNotes.length)
+        height += chartNotes.first().outerHeight();
+    }
+    return height;
+  }
+
+  function maxChartWidth(figureSizes) {
+    var maxWidth = _options.defaultFigWidth;
+    for (var i = 0; i<figureSizes.length; i++)
+      if (figureSizes[i].width > maxWidth)
+        maxWidth = figureSizes[i].width;
+    return maxWidth;
+  }
+
+  // layout a chart
+  function layoutChart(chart, forceFlex) {
+
+    // state to return
+    var result = {
+      notes: false,
+      flex: false
+    };
+
+    // extract the title
+    var title = extractTitle(chart);
+
+    // find components that apply to this container
+    var components = componentsFind(chart);
+
+    // if it's a custom component then call it and return
+    var customComponents = componentsCustom(components);
+    if (customComponents.length) {
+      componentsLayout(customComponents, title, chart);
+      result.notes = false;
+      result.flex = forceFlex || componentsFlex(customComponents);
+      return result;
+    }
+
+    // put all the content in a chart wrapper div
+    chart.addClass('chart-wrapper');
+    chart.wrapInner('<div class="chart-stage"></div>');
+    var chartContent = chart.children('.chart-stage');
+
+    // flex the content if appropriate
+    result.flex = forceFlex || componentsFlex(components);
+    if (result.flex) {
+      // add flex classes
+      chart.addClass('chart-wrapper-flex');
+      chartContent.addClass('chart-stage-flex');
+
+      // additional shim to break out of flexbox sizing
+      chartContent.wrapInner('<div class="chart-shim"></div>');
+      chartContent = chartContent.children('.chart-shim');
+    }
+
+    // set custom data-padding attribute
+    var pad = chart.attr('data-padding');
+    if (pad) {
+      if (pad === "0")
+        chart.addClass('no-padding');
+      else {
+        pad = pad + 'px';
+        chartContent.css('left', pad)
+                    .css('top', pad)
+                    .css('right', pad)
+                    .css('bottom', pad)
+      }
+    }
+
+    // call compoents
+    componentsLayout(components, title, chartContent);
+
+    // also activate components on shiny output
+    findShinyOutput(chartContent).on('shiny:value',
+      function(event) {
+        var element = $(event.target);
+        setTimeout(function() {
+
+          // see if we opted out of flex based on our output (for shiny
+          // we can't tell what type of output we have until after the
+          // value is bound)
+          var components = componentsFind(element);
+          var flex = forceFlex || componentsFlex(components);
+          if (!flex) {
+            chart.css('height', "");
+            setFlex(chart, "");
+            chart.removeClass('chart-wrapper-flex');
+            chartContent.removeClass('chart-stage-flex');
+            chartContent.children().unwrap();
+          }
+
+          // perform layout
+          componentsLayout(components, title, element.parent());
+        }, 10);
+      });
+
+    // add the title
+    var chartTitle = $('<div class="chart-title"></div>');
+    chartTitle.append(title);
+    chart.prepend(chartTitle);
+
+    // add the notes section
+    var chartNotes = $('<div class="chart-notes"></div>');
+    chartNotes.html('&nbsp;');
+    chart.append(chartNotes);
+
+    // attempt to extract notes if we have a component
+    if (components.length)
+      result.notes = extractChartNotes(chartContent, chartNotes);
+
+    // return result
+    return result;
+  }
+
+  // build a tabset from a section div with the .tabset class
+  function layoutTabset(tabset) {
+
+    // check for fade option
+    var fade = tabset.hasClass("tabset-fade");
+    var pills = tabset.hasClass("tabset-pills");
+    var navClass = pills ? "nav-pills" : "nav-tabs";
+
+    // determine the heading level of the tabset and tabs
+    var match = tabset.attr('class').match(/level(\d) /);
+    if (match === null)
+      return;
+    var tabsetLevel = Number(match[1]);
+    var tabLevel = tabsetLevel + 1;
+
+    // find all subheadings immediately below
+    var tabs = tabset.find("div.section.level" + tabLevel);
+    if (!tabs.length)
+      return;
+
+    // create tablist and tab-content elements
+    var tabList = $('<ul class="nav ' + navClass + '" role="tablist"></ul>');
+    $(tabs[0]).before(tabList);
+    var tabContent = $('<div class="tab-content"></div>');
+    $(tabs[0]).before(tabContent);
+
+    // build the tabset
+    var activeTab = 0;
+    tabs.each(function(i) {
+
+      // get the tab div
+      var tab = $(tabs[i]);
+
+      // get the id then sanitize it for use with bootstrap tabs
+      var id = tab.attr('id');
+
+      // see if this is marked as the active tab
+      if (tab.hasClass('active'))
+        activeTab = i;
+
+      // sanitize the id for use with bootstrap tabs
+      id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
+      tab.attr('id', id);
+
+      // get the heading element within it and grab it's text
+      var heading = tab.find('h' + tabLevel + ':first');
+      var headingDom = heading.contents();
+
+      // build and append the tab list item
+      var a = $('<a role="tab" data-toggle="tab" data-bs-toggle="tab" class="nav-link"></a>');
+      a.append(headingDom);
+      a.attr('href', '#' + id);
+      a.attr('aria-controls', id);
+      var li = $('<li role="presentation" class="nav-item"></li>');
+      li.append(a);
+      tabList.append(li);
+
+      // set it's attributes
+      tab.attr('role', 'tabpanel');
+      tab.addClass('tab-pane');
+      tab.addClass('tabbed-pane');
+      tab.addClass('no-title');
+      if (fade)
+        tab.addClass('fade');
+
+      // move it into the tab content div
+      tab.detach().appendTo(tabContent);
+    });
+
+    // set active tab
+    $(tabList.children()[activeTab]).tab("show");
+    var active = $(tabContent.children('div.section')[activeTab]);
+    active.addClass('active');
+    if (fade)
+      active.addClass('in');
+
+    // add nav-tabs-custom
+    tabset.addClass('nav-tabs-custom');
+
+    // internal layout is dashboard-column with tab-content flexing
+    tabset.addClass('dashboard-column');
+    setFlex(tabContent, 1);
+  }
+
+  // one time global initialization for components
+  function componentsInit(dashboardContainer) {
+    for (var i=0; i<window.FlexDashboardComponents.length; i++) {
+      var component = window.FlexDashboardComponents[i];
+      if (component.init)
+        component.init(dashboardContainer);
+    }
+  }
+
+  // find components that apply within a container
+  function componentsFind(container) {
+
+    // look for components
+    var components = [];
+    for (var i=0; i<window.FlexDashboardComponents.length; i++) {
+      var component = window.FlexDashboardComponents[i];
+      if (component.find(container).length)
+        components.push(component);
+    }
+
+    // if there were none then use a special flowing content component
+    // that just adds a scrollbar in fillPage mode
+    if (components.length == 0) {
+      components.push({
+        find: function(container) {
+          return container;
+        },
+
+        flex: function(fillPage) {
+          return fillPage;
+        },
+
+        layout: function(title, container, element, fillPage) {
+          if (fillPage) {
+            container.addClass('flowing-content-shim');
+            container.addClass('flowing-content-container');
+          }
+        }
+      });
+    }
+
+    return components;
+  }
+
+  // if there is a custom component then pick it out
+  function componentsCustom(components) {
+    var customComponent = [];
+    for (var i=0; i<components.length; i++)
+      if (components[i].type === "custom") {
+        customComponent.push(components[i]);
+        break;
+      }
+    return customComponent;
+  }
+
+  // query all components for flex
+  function componentsFlex(components) {
+
+    // no components at all means no flex
+    if (components.length === 0)
+      return false;
+
+    // otherwise query components (assume true unless we see false)
+    var isMobile = isMobilePhone();
+    for (var i=0; i<components.length; i++)
+      if (components[i].flex && !components[i].flex(_options.fillPage))
+        return false;
+    return true;
+  }
+
+  // layout all components
+  function componentsLayout(components, title, container) {
+    var isMobile = isMobilePhone();
+    for (var i=0; i<components.length; i++) {
+      var element = components[i].find(container);
+      if (components[i].layout) {
+        // call layout (don't call other components if it returns false)
+        var result = components[i].layout(title, container, element, _options.fillPage);
+        if (result === false)
+          return;
+      }
+    }
+  }
+
+  // get a reference to the h3, discover it's inner html, and remove it
+  function extractTitle(container) {
+    var h3 = container.children('h3').first();
+    var title = '';
+    if (!container.hasClass('no-title'))
+      title = h3.contents();
+    h3.detach();
+    return title;
+  }
+
+  // extract chart notes
+  function extractChartNotes(chartContent, chartNotes) {
+    // look for a terminating blockquote or image caption
+    var blockquote = chartContent.children('blockquote:last-child');
+    var caption = chartContent.children('div.image-container')
+                              .children('p.caption');
+    if (blockquote.length) {
+      chartNotes.empty().append(blockquote.children('p:first-child').contents());
+      blockquote.remove();
+      return true;
+    } else if (caption.length) {
+      chartNotes.empty().append(caption.contents());
+      caption.remove();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function findShinyOutput(chartContent) {
+    return chartContent.find('.shiny-text-output, .shiny-html-output');
+  }
+
+  // safely detect rendering on a mobile phone
+  function isMobilePhone() {
+    try
+    {
+      return ! window.matchMedia("only screen and (min-width: 768px)").matches;
+    }
+    catch(e) {
+      return false;
+    }
+  }
+
+  function isFillPage() {
+    return _options.fillPage;
+  }
+
+  // detect portrait mode
+  function isPortrait() {
+    return ($(window).width() < $(window).height());
+  }
+
+  // safely detect rendering on a tablet
+  function isTablet() {
+    try
+    {
+      return window.matchMedia("only screen and (min-width: 769px) and (max-width: 992px)").matches;
+    }
+    catch(e) {
+      return false;
+    }
+  }
+
+  // test whether this is a shiny doc
+  function isShinyDoc() {
+    return (typeof(window.Shiny) !== "undefined" && !!window.Shiny.outputBindings);
+  }
+
+  // set flex using vendor specific prefixes
+  function setFlex(el, flex) {
+    el.css('-webkit-box-flex', flex)
+      .css('-webkit-flex', flex)
+      .css('-ms-flex', flex)
+      .css('flex', flex);
+  }
+
+  // support bookmarking of pages
+  function handleLocationHash() {
+
+    // restore tab/page from bookmark
+    var hash = window.decodeURIComponent(window.location.hash);
+    if (hash.length > 0) {
+      // Update the tab without .showPage() so that we don't change page history
+      $('ul.nav a[href="' + hash + '"]').tab('show');
+    }
+
+    // navigate to a tab when the history changes
+    window.addEventListener("popstate", function(e) {
+      var hash = window.decodeURIComponent(window.location.hash);
+      var activeTab = $('ul.nav a[href="' + hash + '"]');
+      if (activeTab.length) {
+        activeTab.tab('show');
+      } else {
+        // returning to the base page URL without a hash activates first tab
+        $('ul.nav a:first').tab('show');
+      }
+    });
+
+    // add a hash to the URL when the user clicks on a tab/page
+    $('.navbar-nav a[data-toggle="tab"]').on('click', function(e) {
+      var baseUrl = FlexDashboardUtils.urlWithoutHash(window.location.href);
+      var hash = FlexDashboardUtils.urlHash($(this).attr('href'));
+      var href = baseUrl + hash;
+      FlexDashboardUtils.setLocation(href);
+    });
+
+    // handle clicks of other links that should activate pages
+    var navPages = $('ul.navbar-nav li a[data-toggle=tab]');
+    navPages.each(function() {
+      var href =  $(this).attr('href');
+      var links = $('a[href="' + href + '"][data-toggle!=tab]');
+      links.each(function() {
+        $(this).on('click', function(e) {
+          window.FlexDashboardUtils.showPage(href);
+        });
+      });
+    });
+  }
+
+  // tweak Prism highlighting
+  function initPrismHighlighting() {
+
+    if (window.Prism) {
+      Prism.languages.insertBefore('r', 'comment', {
+        'heading': [
+          {
+            // title 1
+        	  // =======
+
+        	  // title 2
+        	  // -------
+        	  pattern: /\w+.*(?:\r?\n|\r)(?:====+|----+)/,
+            alias: 'operator'
+          },
+          {
+            // ### title 3
+            pattern: /(^\s*)###[^#].+/m,
+            lookbehind: true,
+            alias: 'operator'
+          }
+        ]
+      });
+
+      // prism highlight
+      Prism.highlightAll();
+    }
+  }
+
+  FlexDashboard.prototype = {
+    constructor: FlexDashboard,
+    init: init,
+    isMobilePhone: isMobilePhone,
+    isFillPage: isFillPage
+  };
+
+  return FlexDashboard;
+
+})();
+
+// utils
+window.FlexDashboardUtils = {
+  resizableImage: function(img) {
+    var src = img.attr('src');
+    var url = 'url("' + src + '")';
+    img.parent().css('background', url)
+                .css('background-size', 'contain')
+                .css('background-repeat', 'no-repeat')
+                .css('background-position', 'center')
+                .addClass('image-container');
+  },
+  setLocation: function(href) {
+    if (history && history.pushState) {
+      history.pushState(null, null, href);
+    } else {
+      window.location.replace(href);
+    }
+    setTimeout(function() {
+        window.scrollTo(0, 0);
+    }, 10);
+  },
+  showPage: function(href) {
+    $('ul.navbar-nav li a[href="' + href + '"]').tab('show');
+    var baseUrl = this.urlWithoutHash(window.location.href);
+    var loc = baseUrl + href;
+    this.setLocation(loc);
+  },
+  showLinkedValue: function(href) {
+    // check for a page link
+    if ($('ul.navbar-nav li a[data-toggle=tab][href="' + href + '"]').length > 0)
+      this.showPage(href);
+    else
+      window.open(href);
+  },
+  urlWithoutHash: function(url) {
+    var hashLoc = url.indexOf('#');
+    if (hashLoc != -1)
+      return url.substring(0, hashLoc);
+    else
+      return url;
+  },
+  urlHash: function(url) {
+    var hashLoc = url.indexOf('#');
+    if (hashLoc != -1)
+      return url.substring(hashLoc);
+    else
+      return "";
+  }
+};
+
+window.FlexDashboard = new FlexDashboard();
+
+// empty content
+window.FlexDashboardComponents.push({
+  find: function(container) {
+    if (container.find('p').length == 0)
+      return container;
+    else
+      return $();
+  }
+})
+
+// plot image
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('p')
+                    .children('img:only-child');
+  },
+
+  layout: function(title, container, element, fillPage) {
+    FlexDashboardUtils.resizableImage(element);
+  }
+});
+
+// plot image (figure style)
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('div.figure').children('img');
+  },
+
+  layout: function(title, container, element, fillPage) {
+    FlexDashboardUtils.resizableImage(element);
+  }
+});
+
+// htmlwidget
+window.FlexDashboardComponents.push({
+
+  init: function(dashboardContainer) {
+    // trigger "shown" after initial layout to force static htmlwidgets
+    // in runtime: shiny to be resized after the dom has been transformed
+    dashboardContainer.on('flexdashboard:layoutcomplete', function(event) {
+      setTimeout(function() {
+        dashboardContainer.trigger('shown');
+      }, 200);
+    });
+  },
+
+  find: function(container) {
+    return container.children('div[id^="htmlwidget-"],div.html-widget');
+  }
+});
+
+// gauge
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('div.html-widget.gauge');
+  },
+
+  flex: function(fillPage) {
+    return false;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+
+  }
+
+});
+
+// shiny output
+window.FlexDashboardComponents.push({
+  find: function(container) {
+    return container.children('div[class^="shiny-"]');
+  }
+});
+
+// bootstrap table
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    var bsTable = container.find('table.table');
+    if (bsTable.length !== 0)
+      return bsTable;
+    else
+      return container.find('tr.header').parent('thead').parent('table');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+    // alias variables
+    var bsTable = element;
+
+    // fixup xtable generated tables with a proper thead
+    var headerRow = bsTable.find('tbody > tr:first-child > th').parent();
+    if (headerRow.length > 0) {
+      var thead = $('<thead></thead>');
+      bsTable.prepend(thead);
+      headerRow.detach().appendTo(thead);
+    }
+
+    // improve appearance
+    container.addClass('bootstrap-table');
+
+    // for fill page provide scrolling w/ sticky headers
+    if (fillPage) {
+      // force scrollbar on overflow
+      container.addClass('flowing-content-shim');
+
+      // stable table headers when scrolling
+      bsTable.stickyTableHeaders({
+        scrollableArea: container
+      });
+    }
+  }
+});
+
+// embedded shiny app
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.find('iframe.shiny-frame');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+    if (fillPage) {
+      element.attr('height', '100%');
+    } else {
+      // provide default height if necessary
+      var height = element.get(0).style.height;
+      if (!height)
+        height = element.attr('height');
+      if (!height)
+        element.attr('height', 500);
+    }
+  }
+});
+
+// shiny fillRow or fillCol
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.find('.flexfill-container');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+    if (fillPage)
+      element.css('height', '100%');
+    else {
+      // provide default height if necessary
+      var height = element.get(0).style.height;
+      if (height === "100%" || height === "auto" || height === "initial" ||
+          height === "inherit" || !height) {
+        element.css('height', 500);
+      }
+    }
+  }
+});
+
+// valueBox
+window.FlexDashboardComponents.push({
+
+  type: "custom",
+
+  find: function(container) {
+    if (container.find('span.value-output, .shiny-valuebox-output').length)
+      return container;
+    else
+      return $();
+  },
+
+  flex: function(fillPage) {
+    return false;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+    // alias variables
+    var chartTitle = title;
+    var valueBox = element;
+
+    // add value-box class to container
+    container.addClass('value-box');
+
+    // value paragraph
+    var value = $('<p class="value"></p>');
+
+    // if we have shiny-text-output then just move it in
+    var valueOutputSpan = [];
+    var shinyOutput = valueBox.find('.shiny-valuebox-output').detach();
+    if (shinyOutput.length) {
+      valueBox.children().remove();
+      shinyOutput.html("&mdash;");
+      value.append(shinyOutput);
+    } else {
+      // extract the value (remove leading vector index)
+      var chartValue = valueBox.text().trim();
+      chartValue = chartValue.replace("[1] ", "");
+      valueOutputSpan = valueBox.find('span.value-output').detach();
+      valueBox.children().remove();
+      value.text(chartValue);
+    }
+
+    // caption
+    var caption = $('<p class="caption"></p>');
+    caption.append(chartTitle);
+
+    // build inner div for value box and add it
+    var inner = $('<div class="inner"></div>');
+    inner.append(value);
+    inner.append(caption);
+    valueBox.append(inner);
+
+    // add icon if specified
+    var icon = $('<div class="icon"><i></i></div>');
+    valueBox.append(icon);
+    function setIcon(chartIcon) {
+      var iconLib = "";
+      var iconSplit = chartIcon.split(" ");
+      if (iconSplit.length > 1) {
+        iconLib = iconSplit[0];
+        chartIcon = iconSplit.slice(1).join(" ");
+      } else {
+        var components = chartIcon.split("-");
+        if (components.length > 1)
+          iconLib = components[0];
+      }
+      icon.children('i').attr('class', iconLib + ' ' + chartIcon);
+    }
+    var chartIcon = valueBox.attr('data-icon');
+    if (chartIcon)
+      setIcon(chartIcon);
+
+    // handle data attributes in valueOutputSpan
+    function handleValueOutput(valueOutput) {
+
+      // caption
+      var dataCaption = valueOutput.attr('data-caption');
+      if (dataCaption)
+        caption.html(dataCaption);
+
+      // icon
+      var dataIcon = valueOutput.attr('data-icon');
+      if (dataIcon)
+        setIcon(dataIcon);
+
+      // If valueBox(color=) was an accent color, this attr should
+      // be populated with the accent color and the relevant CSS comes
+      // in through HTML dependencies
+      var dataColorAccent = valueOutput.attr('data-color-accent');
+      var valueBoxClasses = "value-box-" + (["primary", "info", "danger", "warning", "success"].join(" value-box-"));
+      if (dataColorAccent) {
+        valueBox.removeClass(valueBoxClasses);
+        valueBox.addClass('value-box-' + dataColorAccent);
+      }
+
+      // If valueBox(color=) was a CSS color, these other data-color-*
+      // attrs will be populated
+      var dataColor = valueOutput.attr('data-color');
+      if (dataColor) {
+        valueBox.removeClass(valueBoxClasses);
+        valueBox.css('background-color', dataColor);
+      }
+      var dataColorText = valueOutput.attr('data-color-text');
+      if (dataColorText) {
+        valueBox.find(".inner").css('color', dataColorText);
+      }
+      var dataColorIcon = valueOutput.attr('data-color-icon');
+      if (dataColorIcon) {
+        valueBox.find(".icon").css('color', dataColorIcon);
+      }
+
+      // url
+      var dataHref = valueOutput.attr('data-href');
+      if (dataHref) {
+        valueBox.addClass('linked-value');
+        valueBox.off('click.value-box');
+        valueBox.on('click.value-box', function(e) {
+          window.FlexDashboardUtils.showLinkedValue(dataHref);
+        });
+      }
+    }
+
+    // check for a valueOutputSpan
+    if (valueOutputSpan.length > 0) {
+      handleValueOutput(valueOutputSpan);
+    }
+
+    // if we have a shinyOutput then bind a listener to handle
+    // new valueOutputSpan values
+    shinyOutput.on('shiny:value',
+      function(event) {
+        var element = $(event.target);
+        setTimeout(function() {
+          var valueOutputSpan = element.find('span.value-output');
+          if (valueOutputSpan.length > 0)
+            handleValueOutput(valueOutputSpan);
+        }, 10);
+      }
+    );
+  }
+});
+</script>
+
+<div id="dashboard-container">
 
 <div id="load-the-ny-noaa-dataset" class="section level1">
 <h1>Load the NY NOAA dataset</h1>
-<pre class="r"><code>ny_noaa &lt;- p8105.datasets::ny_noaa
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
-ny_noaa_sample &lt;- ny_noaa %&gt;%
-  filter(!is.na(tmax)) %&gt;%
-  sample_n(1000) </code></pre>
+</div>
 <div id="scatter-plot-precipitation-vs-temperature"
 class="section level3">
 <h3>Scatter Plot: Precipitation vs Temperature</h3>
-<pre class="r"><code>plot_ly(data = ny_noaa_sample, x = ~tmax, y = ~prcp, type = &#39;scatter&#39;, mode = &#39;markers&#39;) %&gt;%
-  layout(title = &quot;Scatterplot: Max Temperature vs Precipitation&quot;,
-         xaxis = list(title = &quot;Max Temperature (°C)&quot;),
-         yaxis = list(title = &quot;Precipitation (mm)&quot;))</code></pre>
-<pre><code>## Warning: Ignoring 29 observations</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-43ddff860df448f26a55" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-43ddff860df448f26a55">{"x":{"visdat":{"6a9b677b5c68":["function () ","plotlyVisDat"]},"cur_data":"6a9b677b5c68","attrs":{"6a9b677b5c68":{"x":{},"y":{},"mode":"markers","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Scatterplot: Max Temperature vs Precipitation","xaxis":{"domain":[0,1],"automargin":true,"title":"Max Temperature (°C)","type":"category","categoryorder":"array","categoryarray":["-100","-106","-11","-111","-117","-121","-122","-133","-139","-167","-17","-178","-22","-28","-33","-39","-44","-50","-56","-6","-61","-67","-72","-78","-83","-89","-94","0","100","106","11","111","115","117","122","128","133","139","144","150","156","161","167","17","172","178","183","189","194","200","202","206","211","217","22","222","228","233","239","244","250","256","261","267","272","276","278","28","283","289","294","300","306","311","317","322","328","33","333","339","356","39","40","44","50","56","6","61","67","72","78","83","89","91","94"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Precipitation (mm)"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["6","156","167","233","244","178","139","278","128","261","244","306","200","106","100","44","267","222","178","17","28","278","156","222","100","67","-39","94","33","39","283","89","111","228","261","117","272","67","106","250","228","0","267","261","44","89","278","-33","311","-17","72","89","200","-33","117","200","267","200","189","233","161","222","89","194","278","256","100","211","17","200","-28","33","33","50","311","89","222","250","83","111","161","317","89","-78","167","256","133","78","167","83","161","83","111","117","50","211","144","133","-72","-61","222","-50","33","89","244","144","0","217","67","44","206","172","261","267","300","156","33","-28","317","289","244","278","94","83","256","94","139","-44","-44","122","178","17","294","33","206","194","267","-50","83","217","172","217","-39","139","272","106","189","144","256","44","-44","111","239","172","228","328","228","283","178","122","172","189","72","28","211","178","117","17","283","61","267","217","17","-67","278","128","56","-50","67","128","289","22","228","211","106","111","222","0","194","200","278","-50","244","300","44","-39","328","-22","-22","117","128","217","-17","267","172","78","122","289","200","83","261","222","-122","239","206","328","-83","306","50","244","17","239","250","211","189","128","144","317","167","-61","222","61","322","-89","239","-50","250","139","261","44","217","50","117","-33","278","289","17","228","72","233","22","239","28","-28","244","250","306","294","100","128","167","56","-100","194","22","239","33","-178","172","56","0","189","33","200","-56","194","67","239","244","-17","28","133","39","67","167","306","-78","106","239","239","-22","239","33","222","206","244","211","267","72","-167","-6","-139","222","133","189","206","228","244","61","244","172","50","89","222","28","278","78","172","256","11","-22","111","111","233","-28","289","56","100","78","194","44","272","217","156","0","-72","50","94","78","106","133","267","-22","72","94","183","256","144","106","-78","22","61","239","122","-17","261","283","200","322","-61","217","294","222","300","189","150","-11","183","-39","-11","289","100","-72","-28","211","272","217","294","122","261","39","183","50","294","50","128","39","278","67","56","172","250","122","178","133","172","194","89","100","106","300","39","189","22","-50","50","89","194","-94","139","133","33","194","194","211","267","161","33","-22","194","44","183","178","-44","200","194","39","83","172","178","78","139","117","267","11","261","-72","78","283","283","106","267","244","283","128","-33","244","122","33","44","322","56","-44","278","189","206","267","117","272","211","11","67","328","244","217","128","-17","6","306","94","50","-61","172","294","-122","278","239","100","28","39","0","106","244","244","-11","233","56","161","-22","133","122","61","94","306","317","-17","172","289","139","250","206","250","-33","272","106","-50","333","44","-78","-44","244","161","-6","44","44","150","317","206","200","222","167","178","328","17","144","-133","244","139","356","117","272","144","167","39","222","89","-17","161","133","161","117","228","339","28","206","94","178","-122","139","272","91","-6","256","194","106","133","144","289","183","89","94","-56","294","200","6","28","194","250","144","228","172","200","222","189","6","300","283","33","-67","61","83","200","33","28","61","139","144","167","278","228","40","11","272","261","256","-22","122","250","-106","244","300","-111","200","39","206","83","-61","106","78","56","244","150","33","206","39","167","211","50","250","161","244","-6","206","-6","-6","78","278","233","244","72","256","94","-139","22","200","78","156","233","133","44","17","206","100","172","172","322","6","178","0","289","233","111","202","250","233","100","-83","-17","56","111","178","272","261","-83","167","239","317","94","17","272","156","-33","283","217","-33","239","222","0","-111","167","139","206","178","244","39","89","-6","278","0","178","322","272","289","217","22","72","206","61","239","211","150","261","144","267","106","-56","11","133","244","111","189","206","178","78","276","283","167","94","-39","33","150","239","189","306","172","306","106","289","133","211","106","228","122","261","-22","89","50","-6","178","200","17","244","244","244","-11","189","117","-39","239","250","256","-111","67","272","50","117","178","272","0","-72","33","311","183","189","328","250","172","67","289","-17","33","111","294","39","256","139","306","211","178","28","122","206","39","222","272","206","228","33","-17","133","211","206","72","200","300","17","244","256","178","117","89","261","228","100","317","78","133","283","106","144","244","167","161","39","150","300","115","83","228","272","228","306","111","17","278","-67","217","206","39","339","-50","-17","278","-44","167","89","144","317","183","244","94","-22","211","89","294","128","244","67","56","-22","22","78","133","272","256","222","183","56","56","178","239","211","222","-121","283","294","200","239","83","61","283","200","156","206","-22","-122","239","233","-17","-17","167","194","-17","0","11","17","250","206","0","167","61","-117","161","33","22","217","250","89","239","-111","39","111","189","211","100","61","122","267","233","78","267","267","-39","183","94","139","17","244","239","56","244","256","-6","194","-78","150","28","289","339","100","0","228","61","33","122","72","294","133","-33","311","39","28","-117","144","250","194","206","267","39","206","122","122","-44","294","-78","228","256","156","78","22","244","144","306","233","22","156","-83","67","156","50","244"],"y":[0,127,0,0,46,0,41,46,0,262,1214,0,25,0,5,0,102,0,3,0,0,0,30,0,76,137,0,168,0,23,0,132,0,56,0,0,0,3,112,8,0,0,0,0,0,0,196,51,0,0,0,0,160,15,0,0,28,25,0,0,107,28,91,0,0,0,155,0,3,117,0,0,338,0,0,0,0,0,61,0,10,0,79,0,0,0,0,0,170,0,3,0,5,15,38,0,3,28,0,28,28,0,3,36,13,91,0,48,0,5,0,8,0,155,0,0,0,46,97,0,20,0,0,0,0,64,5,0,0,0,0,13,0,0,0,0,0,104,8,160,363,0,3,165,0,84,0,0,99,13,0,86,0,5,3,0,0,0,0,0,5,99,3,0,0,0,0,20,0,0,53,10,8,13,0,168,0,0,0,0,0,0,10,15,0,5,508,46,0,417,0,0,43,0,46,0,0,0,224,23,36,0,8,0,36,58,0,0,28,140,0,8,0,0,0,0,30,0,5,58,10,0,23,0,0,0,163,226,0,0,213,0,15,0,58,13,5,13,15,15,0,30,254,0,0,13,0,0,41,0,211,0,8,0,46,658,0,56,5,0,0,0,5,0,0,71,0,51,0,0,0,5,74,0,0,13,0,0,0,41,0,53,0,0,0,0,0,0,0,48,0,0,58,18,0,23,0,69,183,28,8,0,0,3,89,0,0,0,0,0,0,0,10,0,0,15,0,0,53,0,0,0,211,0,102,0,8,0,0,0,0,0,0,0,23,0,0,0,0,0,0,0,0,114,0,3,0,0,18,0,0,0,30,0,0,135,0,56,41,86,0,0,0,0,0,0,18,3,0,0,0,140,8,0,30,0,213,0,0,0,64,89,33,28,38,145,0,218,3,0,0,3,381,0,0,145,3,23,0,239,0,76,18,25,183,18,18,13,0,0,38,0,0,0,3,140,13,0,18,86,10,0,0,0,0,0,89,0,0,0,48,0,66,122,0,18,5,94,0,0,0,0,0,0,142,0,5,0,5,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,361,10,51,216,0,0,0,0,0,0,0,0,0,79,104,8,15,23,0,0,0,0,56,48,132,64,0,0,76,3,0,0,0,3,74,0,0,0,3,0,0,0,58,226,0,0,0,20,0,0,94,25,0,51,224,0,0,25,0,0,0,0,0,0,0,0,0,3,69,0,0,58,0,0,0,0,0,0,0,0,43,0,0,0,0,0,0,0,71,10,0,13,0,3,0,0,0,18,0,18,0,0,0,0,0,0,0,130,0,51,46,114,109,28,5,28,0,0,0,0,0,0,0,0,157,0,0,0,0,8,0,84,25,0,0,0,97,0,0,0,127,0,13,191,0,15,0,0,13,0,15,0,0,0,46,0,0,76,0,81,0,185,0,5,0,0,0,43,0,107,5,0,0,0,0,56,198,18,71,102,0,0,97,231,0,0,51,0,198,0,30,10,36,0,18,3,74,30,0,0,8,0,0,0,94,0,10,5,0,0,0,10,0,5,0,0,264,0,0,165,0,0,0,0,0,140,0,0,0,102,99,102,0,0,236,0,0,0,0,0,30,13,8,0,0,64,0,0,0,0,3,0,0,0,0,0,160,0,41,38,36,8,0,343,0,0,0,0,0,0,0,5,10,0,284,23,23,0,18,0,43,41,0,8,74,89,0,0,0,0,41,0,0,5,0,0,490,0,0,107,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,0,0,0,0,8,0,0,10,30,0,3,0,8,0,0,20,0,0,0,0,0,0,13,0,15,0,251,0,0,5,0,13,0,0,0,77,0,25,0,3,0,5,0,0,0,0,0,0,0,25,0,0,0,38,28,64,0,0,0,0,0,152,5,10,38,0,3,0,0,107,0,0,0,0,0,0,0,0,0,23,0,0,89,0,0,0,0,86,0,0,0,0,28,0,13,0,0,0,0,0,51,0,3,5,33,201,51,0,30,56,0,53,0,0,0,0,0,13,15,0,119,25,0,0,0,61,81,23,8,0,0,10,0,0,132,135,30,0,0,0,0,0,0,0,0,0,0,0,10,0,0,0,5,0,74,0,0,8,0,0,0,0,89,0,0,33,0,76,218,3,0,0,211,0,0,8,3,0,0,206,20,0,18,13,0,38,0,25,15,0],"mode":"markers","type":"scatter","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-42e442815e79a06ec533" style="width:576px;height:460.8px;"></div>
+<script type="application/json" data-for="htmlwidget-42e442815e79a06ec533">{"x":{"visdat":{"6d611be95213":["function () ","plotlyVisDat"]},"cur_data":"6d611be95213","attrs":{"6d611be95213":{"x":{},"y":{},"mode":"markers","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Scatterplot: Max Temperature vs Precipitation","xaxis":{"domain":[0,1],"automargin":true,"title":"Max Temperature (°C)","type":"category","categoryorder":"array","categoryarray":["-100","-11","-111","-117","-122","-167","-17","-22","-28","-33","-39","-44","-50","-56","-6","-61","-67","-78","-83","-89","0","100","106","11","111","117","122","128","133","139","144","150","156","161","167","17","172","178","183","189","194","200","206","211","217","22","222","228","233","239","244","250","255","256","261","267","272","278","28","283","289","294","300","306","308","311","317","322","328","33","333","339","356","39","44","50","56","6","61","67","72","78","83","89","94"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Precipitation (mm)"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["-78","61","61","250","250","256","39","11","139","117","67","89","189","139","283","-61","-6","211","272","61","-6","44","172","6","67","128","189","272","-6","83","256","111","139","178","156","17","106","244","233","67","194","272","78","183","167","239","0","-67","256","39","56","22","178","228","-67","117","161","261","67","283","100","106","300","111","-44","89","-78","194","6","228","0","250","194","167","33","161","-122","289","61","211","161","250","256","211","61","267","222","33","228","-78","22","33","161","144","17","22","256","311","272","217","161","28","294","-83","39","206","300","256","256","283","239","178","267","178","-6","-39","283","-83","106","-50","106","317","150","111","233","222","300","111","250","106","250","94","283","250","233","283","6","-50","311","144","156","-17","-44","317","17","122","67","17","228","94","-33","206","289","322","239","239","67","222","267","61","139","28","100","-67","194","194","222","-39","261","272","233","261","222","67","228","33","-78","44","117","283","94","39","0","161","272","-22","50","244","150","-56","-44","233","156","283","244","244","189","111","128","122","250","22","33","33","256","278","161","-61","194","183","28","311","-111","206","94","72","150","50","172","106","178","28","11","33","50","317","33","150","17","267","211","300","106","72","217","72","283","144","-100","111","222","233","206","183","267","-6","-44","172","128","50","183","189","150","-22","17","94","28","44","78","239","144","206","278","150","200","233","183","322","-167","294","-22","89","261","272","0","-39","317","-22","0","156","-11","167","89","256","233","-28","-17","-39","339","-50","22","100","200","278","-22","17","133","222","228","250","67","194","200","256","61","-11","100","150","72","44","211","100","128","222","106","83","67","94","-100","289","217","283","233","128","244","239","28","122","194","100","228","122","28","294","111","333","306","206","217","50","278","239","294","-89","122","239","289","244","167","222","228","-28","189","61","211","194","-28","250","161","183","222","272","256","283","50","272","306","17","206","144","22","256","211","172","306","-67","122","122","178","94","133","72","78","228","206","144","133","139","261","122","72","-28","172","233","167","44","233","67","144","228","244","100","83","300","167","278","0","133","294","72","211","222","122","161","306","28","122","89","206","156","-117","67","-83","111","33","217","78","89","244","-50","122","283","311","144","-83","217","217","239","44","267","217","17","22","200","83","-11","250","6","228","233","189","83","-6","222","294","250","267","44","67","206","0","217","272","228","189","0","94","272","94","89","278","272","328","50","117","256","56","200","228","128","83","78","100","100","172","233","178","56","22","183","272","33","-17","283","-56","39","-11","6","272","272","-17","267","283","-22","206","356","33","206","161","139","261","78","194","194","133","244","267","200","-50","33","239","172","-11","222","178","28","222","206","239","39","178","78","244","-6","322","-11","39","-78","222","39","11","256","211","206","267","311","161","308","167","156","106","-50","144","78","67","11","-17","239","11","83","61","-61","233","194","-44","156","289","317","256","50","250","94","211","250","256","89","161","50","256","72","267","11","244","278","106","89","78","161","133","283","89","239","83","78","100","89","78","267","267","283","78","206","217","256","183","311","267","261","83","22","244","39","133","239","117","256","106","167","139","133","278","211","250","200","256","161","244","233","39","289","94","133","33","272","278","300","294","83","83","300","67","233","128","172","117","78","39","206","-11","294","17","-22","211","39","194","278","222","239","-11","283","228","261","133","178","233","161","228","167","11","150","261","222","328","183","322","72","333","139","211","11","244","322","217","200","239","150","17","0","167","144","206","222","78","222","139","128","78","72","144","17","161","61","217","33","33","256","-61","122","289","178","-44","-17","50","150","300","256","267","194","111","289","-6","278","33","6","89","50","61","272","0","261","294","22","244","-89","283","283","-44","167","189","17","28","150","206","39","172","33","217","50","278","44","122","267","267","78","150","211","167","211","255","111","261","11","233","139","111","167","128","-50","256","28","272","144","72","278","100","172","78","144","56","144","117","133","239","267","206","56","283","150","150","217","33","161","267","244","322","239","61","78","222","183","206","106","233","139","222","194","194","11","17","50","-83","33","322","217","167","0","17","172","0","272","44","200","267","6","156","278","211","211","167","144","356","28","178","-67","217","50","183","194","239","267","244","61","261","183","111","50","156","311","217","39","17","256","306","67","156","278","183","117","106","17","239","39","278","0","156","178","244","244","-17","33","150","206","250","50","200","250","67","167","28","67","211","78","83","72","-100","250","222","256","272","172","0","39","-56","272","61","-39","-33","250","161","267","161","106","261","72","11","44","244","178","-28","278","233","122","183","289","300","306","217","-61","11","261","117","261","-33","211","133","200","300","-11","-39","56","17","50","-6","28","283","261","133","44","139","206","261","128","128","56","100","150","239","167","200","139","183","56","50","-44","217","100","228","106","283","300","111","306","211","-56","206","228","228","61","211","122","194","156"],"y":[25,0,0,0,0,0,0,3,76,48,46,0,0,0,0,76,0,0,0,0,135,0,0,0,0,0,3,0,33,91,3,0,147,178,74,0,0,0,84,74,0,0,15,0,0,0,81,0,0,0,38,0,0,3,0,165,0,0,0,112,3,109,0,0,0,0,15,0,0,0,0,5,0,0,0,0,0,0,0,0,147,0,3,0,33,0,0,0,8,13,23,0,5,64,0,216,185,0,0,0,0,0,0,0,15,0,0,66,0,0,0,0,0,5,0,0,5,0,0,20,0,30,0,0,56,229,18,8,0,0,0,5,206,0,23,0,0,0,0,0,69,0,0,15,0,46,0,3,0,56,0,15,0,107,0,36,0,0,0,0,0,0,0,13,0,0,0,0,0,0,0,132,0,0,0,0,0,36,5,0,0,0,0,71,51,5,5,0,74,61,0,127,0,0,0,0,5,38,41,8,5,0,0,0,13,38,130,5,0,0,0,0,0,0,0,0,0,0,0,0,3,58,0,0,64,0,18,0,0,102,8,0,10,0,0,132,0,0,0,0,0,0,13,178,13,69,0,58,102,0,0,0,69,8,0,0,0,0,0,30,8,8,0,0,0,0,0,0,0,0,330,0,0,0,0,0,0,0,84,0,0,127,185,0,140,15,0,0,0,0,102,226,3,0,15,0,18,28,86,0,3,135,10,0,13,0,0,150,0,0,0,10,0,0,76,241,0,20,5,0,0,0,5,8,0,109,58,0,0,94,10,56,10,0,30,0,0,5,0,53,3,300,0,3,38,0,5,0,0,0,46,0,0,0,10,0,5,0,0,97,5,0,0,0,0,0,0,0,251,236,0,3,0,5,0,140,51,30,229,33,3,0,0,0,15,76,0,0,0,0,0,0,0,0,107,0,20,305,28,0,0,41,0,0,0,135,0,0,3,0,0,0,0,0,84,0,0,0,0,191,0,0,135,132,0,269,0,8,0,18,5,124,0,0,0,127,0,0,89,0,0,30,74,0,0,0,0,97,0,0,76,53,0,0,8,0,0,15,157,28,122,185,0,79,3,8,79,33,251,0,0,0,41,0,13,0,0,51,13,0,74,0,91,0,0,0,71,3,0,0,0,46,84,114,0,0,0,290,0,0,28,0,0,0,0,137,0,0,13,0,5,0,0,3,0,0,0,0,10,0,3,0,145,0,0,3,0,0,0,0,0,86,0,38,0,8,94,0,0,0,0,0,0,0,10,0,0,3,69,0,5,0,30,0,25,8,0,0,188,0,0,0,33,33,0,3,74,0,0,0,0,0,0,3,0,15,117,0,0,0,0,10,53,46,0,84,66,0,91,48,363,0,5,43,48,41,0,10,203,0,0,193,0,46,193,0,0,36,71,0,0,0,0,8,8,0,0,25,15,251,18,0,0,18,38,33,0,10,0,0,0,15,0,0,140,127,0,0,0,0,0,30,5,0,20,5,0,13,0,0,89,0,0,0,15,0,71,61,0,0,25,0,0,10,3,213,0,234,0,76,0,0,0,0,0,0,0,0,0,0,38,0,0,0,0,0,0,0,0,0,0,3,5,89,38,61,0,152,0,8,0,0,0,0,18,0,0,107,0,69,30,0,0,137,0,0,20,0,226,0,0,5,3,0,3,0,20,0,0,97,0,226,0,0,0,0,0,0,114,0,0,89,0,0,69,0,0,76,43,0,10,13,114,69,0,0,0,0,68,257,0,198,0,0,0,150,330,0,13,10,0,0,30,18,5,0,18,0,0,0,117,79,8,25,61,0,20,0,3,5,0,152,155,226,0,15,0,3,0,20,0,178,0,8,0,0,424,201,0,480,0,0,61,0,0,0,0,0,23,0,0,0,66,0,130,168,0,46,206,0,0,10,0,0,0,23,0,36,8,0,5,0,18,0,8,0,99,0,0,3,0,0,0,15,145,0,13,79,0,0,0,0,0,0,0,15,20,0,0,579,0,0,8,13,3,41,0,0,0,137,0,0,84,0,0,0,0,0,0,13,0,0,8,0,38,0,0,0,0,0,64,13,0,0,0,0,0,152,10,0,0,0,8,0,0,0,15,0,10,137,8,0,46,0,10,0,0,0,0,0,0,0,0,0,0,0,10,0,0,132,0,0,8,0,0,5,0,0,0,48,0,135,79,13,0,0,0,0,0,0,229,0,114,0,0,0,86,0,0,157,0,0],"mode":"markers","type":"scatter","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="bar-plot" class="section level3">
 <h3>Bar Plot</h3>
-<pre class="r"><code>ny_noaa_sample &lt;- ny_noaa_sample %&gt;%
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-b65c85ad802ba7e2d012" style="width:576px;height:460.8px;"></div>
+<script type="application/json" data-for="htmlwidget-b65c85ad802ba7e2d012">{"x":{"visdat":{"6d6172cc7314":["function () ","plotlyVisDat"]},"cur_data":"6d6172cc7314","attrs":{"6d6172cc7314":{"x":{},"y":{},"marker":{"color":"viridis"},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Average Maximum Temperature by Month","xaxis":{"domain":[0,1],"automargin":true,"title":"Month","type":"category","categoryorder":"array","categoryarray":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Average Max Temperature (°C)"},"barmode":"group","hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"y":[7.8333333333333384,17.166666666666661,75.82352941176471,139.13333333333333,210.03529411764706,240.45783132530121,264.30120481927713,259.57142857142856,222.88999999999999,150.89156626506025,92.243243243243242,17],"marker":{"color":"viridis","line":{"color":"rgba(31,119,180,1)"}},"type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="box-plot" class="section level3">
+<h3>Box Plot</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-73fa0d700d555f644d62" style="width:576px;height:460.8px;"></div>
+<script type="application/json" data-for="htmlwidget-73fa0d700d555f644d62">{"x":{"visdat":{"6d61665c8ee3":["function () ","plotlyVisDat"]},"cur_data":"6d61665c8ee3","attrs":{"6d61665c8ee3":{"y":{},"x":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Monthly Distribution of Maximum Temperature","xaxis":{"domain":[0,1],"automargin":true,"title":"Month","type":"category","categoryorder":"array","categoryarray":["Jan","Dec","Feb","Mar","Nov","Apr","Oct","May","Sep","Jun","Jul","Aug"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Maximum Temperature (°C)"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(253,231,37,0.5)","y":[139,272,233,272,300,161,217,300,283,283,311,289,322,222,228,283,189,272,311,283,233,322,272,211,289,228,294,272,228,244,300,206,222,278,267,283,200,244,267,294,317,256,267,267,267,311,267,244,256,233,206,211,239,233,322,244,306,300,256,267,289,278,294,267,255,256,322,239,206,233,194,267,261,278,278,272,272,244,261,200,228,283,306,228],"x":["Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug"],"type":"box","name":"Aug","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"line":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(194,223,35,0.5)","y":[272,322,228,283,256,267,311,272,294,300,283,239,267,283,317,267,272,267,283,244,278,161,267,206,317,250,150,283,278,289,256,306,178,233,233,211,306,283,311,267,233,294,267,256,272,206,356,261,233,244,322,308,283,256,261,239,256,278,294,278,222,283,328,322,222,256,244,283,283,267,261,267,322,267,211,167,211,250,250,256,267,283,228],"x":["Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul"],"type":"box","name":"Jul","marker":{"color":"rgba(194,223,35,1)","line":{"color":"rgba(194,223,35,1)"}},"line":{"color":"rgba(194,223,35,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(133,213,74,0.5)","y":[172,244,256,183,178,117,261,250,289,211,206,256,250,250,228,239,239,283,222,272,244,233,156,317,267,206,278,278,256,244,306,206,222,189,211,250,256,283,306,144,256,261,167,294,217,250,272,328,200,228,272,256,211,167,239,206,133,250,161,272,194,261,333,239,272,261,272,267,283,139,194,272,278,356,306,244,250,278,233,211,300,200,217],"x":["Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun"],"type":"box","name":"Jun","marker":{"color":"rgba(133,213,74,1)","line":{"color":"rgba(133,213,74,1)"}},"line":{"color":"rgba(133,213,74,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(81,196,106,0.5)","y":[250,256,178,189,194,239,211,228,233,156,261,244,250,256,172,178,300,217,222,150,183,294,261,167,233,339,200,200,128,217,233,239,239,244,167,228,272,206,206,172,233,144,278,217,244,239,200,250,272,228,189,272,183,206,194,267,239,172,222,239,311,161,144,289,256,256,244,278,133,217,278,289,294,300,261,150,144,217,206,217,233,144,206,150,217,172,217,244,183,244,200,211,250,289,306,261,261,206,139,211],"x":["Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep"],"type":"box","name":"Sep","marker":{"color":"rgba(81,196,106,1)","line":{"color":"rgba(81,196,106,1)"}},"line":{"color":"rgba(81,196,106,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(43,176,127,0.5)","y":[250,139,283,328,128,256,156,194,250,256,317,222,250,144,194,150,194,183,50,106,172,189,200,256,222,228,222,333,161,222,222,156,144,206,172,233,283,272,206,222,239,250,250,283,117,300,233,228,133,161,167,222,200,144,289,194,150,172,278,211,167,128,278,244,222,200,156,211,194,311,183,239,178,222,161,261,300,261,128,239,167,183,300,206,122],"x":["May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May"],"type":"box","name":"May","marker":{"color":"rgba(43,176,127,1)","line":{"color":"rgba(43,176,127,1)"}},"line":{"color":"rgba(43,176,127,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(30,155,138,0.5)","y":[139,178,183,167,67,228,61,222,144,161,150,94,128,222,233,117,94,206,150,150,233,144,100,211,106,128,100,217,239,211,133,122,161,122,89,217,217,217,128,83,78,178,33,222,106,94,161,106,78,172,228,222,161,122,150,111,6,189,122,167,111,144,172,217,78,183,222,178,111,156,217,156,156,150,206,50,167,172,161,106,183,150,100],"x":["Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct"],"type":"box","name":"Oct","marker":{"color":"rgba(30,155,138,1)","line":{"color":"rgba(30,155,138,1)"}},"line":{"color":"rgba(30,155,138,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(37,133,142,0.5)","y":[67,189,211,83,78,161,89,194,167,178,178,233,94,206,139,194,261,50,128,94,183,128,183,239,156,133,194,67,294,122,94,72,228,133,122,100,72,67,122,6,228,189,44,0,117,56,139,78,133,178,78,206,67,233,156,211,78,161,139,200,261,83,72,139,211,217,167,61,33,89,167,78,139,72,117,239,161,11,144,183,256,78,72,217,133,128,33,211,194,156],"x":["Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr"],"type":"box","name":"Apr","marker":{"color":"rgba(37,133,142,1)","line":{"color":"rgba(37,133,142,1)"}},"line":{"color":"rgba(37,133,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(45,112,142,0.5)","y":[-61,61,67,106,161,106,111,111,67,17,67,161,111,50,211,106,150,89,17,122,122,28,67,194,183,172,167,28,111,83,67,94,89,50,22,161,194,-11,178,50,50,89,183,167,33,39,11,206,139,128,78,22,50,17,44,111,144,150,106,33,67,117,17,33,67,28,72,178,122,117,56,56,106,111],"x":["Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov"],"type":"box","name":"Nov","marker":{"color":"rgba(45,112,142,1)","line":{"color":"rgba(45,112,142,1)"}},"line":{"color":"rgba(45,112,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(56,89,140,0.5)","y":[117,67,111,17,106,-83,39,256,61,67,39,122,28,28,144,111,-39,100,100,83,194,-67,122,78,144,139,67,83,133,89,33,122,22,83,-6,56,100,33,-11,11,156,-50,11,194,89,72,89,89,78,211,39,133,94,133,67,128,78,17,-22,-11,178,150,183,78,61,50,61,17,100,56,167,6,-67,50,239,39,67,28,133,139,100,50,61,-56,61],"x":["Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar"],"type":"box","name":"Mar","marker":{"color":"rgba(56,89,140,1)","line":{"color":"rgba(56,89,140,1)"}},"line":{"color":"rgba(56,89,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(67,62,133,0.5)","y":[-78,61,-6,44,6,-6,-67,56,22,-44,-78,6,61,161,-78,33,106,106,17,28,100,-39,44,0,-56,33,-111,33,50,78,-11,-17,-22,44,111,50,-28,-28,17,122,-6,72,-28,44,-117,-83,-83,44,100,-17,-56,6,-50,33,-6,39,39,11,-17,-44,100,117,11,50,-6,33,-89,39,211,28,133,56,33,61,17,-83,0,44,28,61,50,-17,83,39,-33,-28,-61,-39,50,56],"x":["Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb"],"type":"box","name":"Feb","marker":{"color":"rgba(67,62,133,1)","line":{"color":"rgba(67,62,133,1)"}},"line":{"color":"rgba(67,62,133,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(72,33,115,0.5)","y":[61,39,100,111,33,22,17,22,-50,6,-50,-17,-44,-22,122,-33,33,-78,-22,-61,72,33,17,72,-100,-6,-44,-22,28,44,-78,-22,89,0,-22,0,-50,22,61,-11,72,94,-100,28,-89,50,-50,78,-50,17,-11,94,-11,-17,78,61,-61,11,78,83,22,106,244,83,-11,17,72,17,178,-44,28,33,11,78,17,0,-100,61,11,11,-33,-11,-6],"x":["Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec"],"type":"box","name":"Dec","marker":{"color":"rgba(72,33,115,1)","line":{"color":"rgba(72,33,115,1)"}},"line":{"color":"rgba(72,33,115,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(68,1,84,0.5)","y":[39,11,89,-6,0,-67,0,33,-122,28,-6,-39,-83,-67,-44,22,33,11,72,17,94,-167,-39,-28,67,61,22,-33,0,0,39,-22,28,39,-78,83,83,39,133,39,0,33,-61,-44,-17,0,150,-50,50,17,0,106,39,0,-56,-39,44,17,44,-44],"x":["Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan"],"type":"box","name":"Jan","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"line":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+
+</div>
+
+<script>
+$(document).ready(function() {
+  // add bootstrap table styles to pandoc tables
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed table-sm');
+
+  // initialize mathjax
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+  document.getElementsByTagName("head")[0].appendChild(script);
+
+});
+</script>
+
+<div id="flexdashboard-source-code">
+<pre class="line-numbers"><code class="language-r">---
+title: "NY NOAA Weather Data Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(plotly)
+library(p8105.datasets)
+library(dplyr)
+library(lubridate)
+library(tidyr)
+library(janitor)
+```
+
+# Load the NY NOAA dataset
+```{r}
+ny_noaa &lt;- p8105.datasets::ny_noaa
+
+ny_noaa_sample &lt;- ny_noaa %&gt;%
+  filter(!is.na(tmax)) %&gt;%
+  sample_n(1000) 
+
+```
+
+
+### Scatter Plot: Precipitation vs Temperature
+
+```{r}
+plot_ly(data = ny_noaa_sample, x = ~tmax, y = ~prcp, type = 'scatter', mode = 'markers') %&gt;%
+  layout(title = "Scatterplot: Max Temperature vs Precipitation",
+         xaxis = list(title = "Max Temperature (°C)"),
+         yaxis = list(title = "Precipitation (mm)"))
+```
+
+
+### Bar Plot
+
+```{r}
+
+ny_noaa_sample &lt;- ny_noaa_sample %&gt;%
   mutate(
     tmax = as.numeric(tmax),    
     tmin = as.numeric(tmin),    
@@ -328,77 +1978,61 @@ ny_noaa_summary &lt;- ny_noaa_sample %&gt;%
   group_by(month) %&gt;%
   summarize(avg_tmax = mean(tmax, na.rm = TRUE))
 
-bar_plot &lt;- plot_ly(ny_noaa_summary, x = ~month, y = ~avg_tmax, type = &quot;bar&quot;, marker = list(color = &quot;viridis&quot;)) %&gt;%
+bar_plot &lt;- plot_ly(ny_noaa_summary, x = ~month, y = ~avg_tmax, type = "bar", marker = list(color = "viridis")) %&gt;%
   layout(
-    title = &quot;Average Maximum Temperature by Month&quot;,
-    xaxis = list(title = &quot;Month&quot;),
-    yaxis = list(title = &quot;Average Max Temperature (°C)&quot;),
-    barmode = &quot;group&quot;
+    title = "Average Maximum Temperature by Month",
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Average Max Temperature (°C)"),
+    barmode = "group"
   )
 
-bar_plot</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-4725179c8bc5a9f27113" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-4725179c8bc5a9f27113">{"x":{"visdat":{"6a9b2a9e2b5a":["function () ","plotlyVisDat"]},"cur_data":"6a9b2a9e2b5a","attrs":{"6a9b2a9e2b5a":{"x":{},"y":{},"marker":{"color":"viridis"},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Average Maximum Temperature by Month","xaxis":{"domain":[0,1],"automargin":true,"title":"Month","type":"category","categoryorder":"array","categoryarray":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Average Max Temperature (°C)"},"barmode":"group","hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"y":[-6.1235955056179812,8.3205128205128247,87.025641025641036,127.60638297872342,197.59615384615384,244.83561643835617,261.04109589041099,264.53932584269666,225.18823529411765,156.63999999999999,88.698795180722897,16.73417721518987],"marker":{"color":"viridis","line":{"color":"rgba(31,119,180,1)"}},"type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-</div>
-<div id="box-plot" class="section level3">
-<h3>Box Plot</h3>
-<pre class="r"><code>library(forcats)
+bar_plot
+```
+
+
+### Box Plot
+```{r}
+library(forcats)
 
 ny_noaa_sample %&gt;%
   mutate(month = fct_reorder(month, tmax, .fun = median, na.rm = TRUE)) %&gt;% 
-  plot_ly(y = ~tmax, x = ~month, color = ~month, type = &quot;box&quot;, colors = &quot;viridis&quot;) %&gt;%
+  plot_ly(y = ~tmax, x = ~month, color = ~month, type = "box", colors = "viridis") %&gt;%
   layout(
-    title = &quot;Monthly Distribution of Maximum Temperature&quot;,
-    xaxis = list(title = &quot;Month&quot;),
-    yaxis = list(title = &quot;Maximum Temperature (°C)&quot;))</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-47c086657ddd14267850" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-47c086657ddd14267850">{"x":{"visdat":{"6a9b57904d35":["function () ","plotlyVisDat"]},"cur_data":"6a9b57904d35","attrs":{"6a9b57904d35":{"y":{},"x":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Monthly Distribution of Maximum Temperature","xaxis":{"domain":[0,1],"automargin":true,"title":"Month","type":"category","categoryorder":"array","categoryarray":["Jan","Feb","Dec","Nov","Mar","Apr","Oct","May","Sep","Jun","Aug","Jul"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Maximum Temperature (°C)"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(253,231,37,0.5)","y":[244,306,278,261,272,278,311,233,250,317,267,317,244,172,272,328,283,278,289,244,200,306,317,250,306,294,194,306,239,239,189,283,272,322,278,244,317,289,244,317,356,272,283,294,200,300,283,228,244,250,-139,200,289,239,278,239,261,289,200,239,250,311,250,256,306,278,272,194,244,339,228,206,267],"x":["Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul"],"type":"box","name":"Jul","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"line":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(194,223,35,0.5)","y":[261,222,256,200,256,222,261,300,267,283,172,217,267,289,239,222,322,200,244,289,267,261,217,300,211,278,300,267,267,244,272,328,306,294,239,333,328,272,289,344,222,261,250,300,250,239,317,283,256,244,322,289,217,267,276,306,306,211,261,244,244,272,289,294,306,222,206,256,261,272,228,217,339,317,294,222,294,239,267,256,289,294,250,206,233,256,244,306,244],"x":["Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug"],"type":"box","name":"Aug","marker":{"color":"rgba(194,223,35,1)","line":{"color":"rgba(194,223,35,1)"}},"line":{"color":"rgba(194,223,35,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(133,213,74,0.5)","y":[278,283,250,228,267,222,161,172,278,228,189,267,278,300,328,261,239,239,289,239,244,239,228,244,222,256,272,256,322,222,100,172,161,194,261,128,278,267,244,161,306,222,228,339,206,272,300,206,256,233,233,156,272,283,256,272,328,172,300,317,283,300,283,283,250,167,250,239,211,150,311,294,228],"x":["Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun"],"type":"box","name":"Jun","marker":{"color":"rgba(133,213,74,1)","line":{"color":"rgba(133,213,74,1)"}},"line":{"color":"rgba(133,213,74,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(81,196,106,0.5)","y":[233,139,244,267,278,228,261,267,278,211,311,289,256,206,217,139,256,228,211,228,211,200,250,228,167,239,267,233,194,233,289,294,194,194,194,183,178,283,267,211,233,278,178,178,256,194,183,272,200,256,206,211,244,206,206,322,272,167,222,206,178,206,150,206,239,228,178,272,211,244,178,161,278,244,256,222,183,178,239,211,200,239,244,144,306],"x":["Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep"],"type":"box","name":"Sep","marker":{"color":"rgba(81,196,106,1)","line":{"color":"rgba(81,196,106,1)"}},"line":{"color":"rgba(81,196,106,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(43,176,127,0.5)","y":[156,222,117,228,200,117,194,111,167,117,144,217,206,139,294,189,239,217,222,194,222,206,328,250,72,206,211,278,217,294,261,172,250,178,139,211,178,194,283,106,244,283,206,244,217,128,139,250,250,272,161,200,222,244,161,133,200,228,172,278,244,200,106,278,233,156,133,178,178,261,272,217,167,178,150,189,172,133,244,211,206,228,117,228,133,244,167,150,115,228,211,78,200,206,167,217,111,267,233,267,239,122,144,194],"x":["May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May"],"type":"box","name":"May","marker":{"color":"rgba(43,176,127,1)","line":{"color":"rgba(43,176,127,1)"}},"line":{"color":"rgba(43,176,127,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(30,155,138,0.5)","y":[156,128,106,222,200,222,111,167,133,211,133,144,217,122,194,44,122,128,117,244,144,167,139,261,217,194,172,133,172,156,122,189,133,200,122,117,106,133,94,206,44,150,144,167,139,250,189,61,222,144,150,244,72,111,202,89,11,244,189,167,89,117,178,189,122,133,206,167,244,133,189,122,183,233,156],"x":["Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct"],"type":"box","name":"Oct","marker":{"color":"rgba(30,155,138,1)","line":{"color":"rgba(30,155,138,1)"}},"line":{"color":"rgba(30,155,138,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(37,133,142,0.5)","y":[167,178,178,67,111,72,189,89,17,89,-61,244,67,156,83,178,83,217,111,178,72,117,128,106,111,78,139,44,117,278,233,22,28,100,239,33,222,222,111,244,172,50,94,106,183,106,239,294,189,183,217,50,133,100,89,172,172,172,106,167,144,139,39,89,194,6,172,233,56,178,106,50,117,67,206,200,89,78,144,83,111,144,56,233,206,61,161,22,-6,194,72,122,22,156],"x":["Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr"],"type":"box","name":"Apr","marker":{"color":"rgba(37,133,142,1)","line":{"color":"rgba(37,133,142,1)"}},"line":{"color":"rgba(37,133,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(45,112,142,0.5)","y":[6,200,44,44,-17,89,111,0,44,94,144,61,56,44,122,50,211,189,217,128,67,67,106,244,133,206,78,0,78,144,122,150,122,106,39,50,-22,11,-72,-44,6,94,128,56,61,-17,206,-11,117,89,144,139,167,39,167,78,172,-17,33,211,144,94,122,44,183,67,178,-50,183,94,89,128,56,0,133,-78,67,50],"x":["Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar"],"type":"box","name":"Mar","marker":{"color":"rgba(45,112,142,1)","line":{"color":"rgba(45,112,142,1)"}},"line":{"color":"rgba(45,112,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(56,89,140,0.5)","y":[39,67,89,200,161,100,33,50,89,83,83,178,17,22,172,83,128,139,56,189,39,167,28,111,78,133,72,61,200,183,50,128,56,33,194,44,117,33,189,50,100,28,-11,122,17,161,133,117,106,144,28,33,78,56,-6,100,100,111,94,0,61,111,78,189,0,111,139,72,17,106,39,67,83,156,100,61,94,100,-33,39,39,122,156],"x":["Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov"],"type":"box","name":"Nov","marker":{"color":"rgba(56,89,140,1)","line":{"color":"rgba(56,89,140,1)"}},"line":{"color":"rgba(56,89,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(67,62,133,0.5)","y":[17,94,33,-33,50,-44,17,-50,17,0,-22,128,-17,17,-61,50,-33,33,-56,-6,-139,61,50,89,-22,111,56,100,44,-22,-78,-17,-72,39,67,33,-44,39,78,-33,39,-50,-6,-17,94,94,-56,6,-67,33,61,11,-22,-6,94,22,6,39,22,72,33,106,28,39,33,17,56,22,-17,-17,33,-111,39,78,17,28,61,-44,78],"x":["Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec"],"type":"box","name":"Dec","marker":{"color":"rgba(67,62,133,1)","line":{"color":"rgba(67,62,133,1)"}},"line":{"color":"rgba(67,62,133,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(72,33,115,0.5)","y":[28,100,106,-28,33,83,-78,-72,-50,33,-39,-10,106,-44,172,67,-39,-22,-122,-83,61,-89,17,-100,-78,-22,72,11,-11,-28,89,83,139,78,44,56,-17,-61,-122,-78,44,91,28,122,83,-61,39,50,161,17,-33,-33,133,17,-39,-111,-72,33,-17,39,100,-67,39,-17,-22,-121,61,128,-22,-17,11,17,-117,-39,139,17,0,-117],"x":["Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb"],"type":"box","name":"Feb","marker":{"color":"rgba(72,33,115,1)","line":{"color":"rgba(72,33,115,1)"}},"line":{"color":"rgba(72,33,115,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(68,1,84,0.5)","y":[100,-39,89,0,-33,78,161,33,89,-28,94,-44,33,28,-67,-50,-50,-50,-28,22,33,-178,56,0,-17,28,-167,-28,-72,94,22,-61,-39,-11,39,22,-50,-94,11,67,0,-22,-33,-44,44,-133,28,-122,-6,83,40,-22,-106,-111,33,-6,78,44,17,0,-83,-83,-111,139,-6,0,106,-56,-39,-22,-6,-11,50,33,-17,-44,89,-6,-22,-122,0,89,56,-78,33,28,-156,22,-83],"x":["Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan"],"type":"box","name":"Jan","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"line":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+    title = "Monthly Distribution of Maximum Temperature",
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Maximum Temperature (°C)"))
+
+```
+</code></pre>
 </div>
-</div>
-
-
-
-
-</div>
-
-<script>
-
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
-}
+<script type="text/javascript">
 $(document).ready(function () {
-  bootstrapStylePandocTables();
-});
-
-
-</script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open');
+  FlexDashboard.init({
+    fillPage: true,
+    orientation: "columns",
+    storyboard: false,
+    defaultFigWidth: 576,
+    defaultFigHeight: 460,
+    defaultFigWidthMobile: 360,
+    defaultFigHeightMobile: 460,
+    resize_reload: true
+  });
+  var navbar = $(".navbar").first();
+  var body = $("body").first();
+  var sidebar = $(".section.sidebar").first();
+  function addNavbarPadding() {
+    var navHeight = navbar.outerHeight();
+    body.css("padding-top", (navHeight + 8) + "px");
+    sidebar.css("top", navHeight + "px");
+    var resizeEvent = window.document.createEvent("UIEvents");
+    resizeEvent.initUIEvent("resize", true, false, window, 0);
+    window.dispatchEvent(resizeEvent);
+  }
+  if (!window.Shiny) setTimeout(addNavbarPadding, 100);
+  $(document).on("shiny:idle", function() {
+    setTimeout(addNavbarPadding, 50);
   });
 });
-</script>
-
-<!-- code folding -->
-
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
 </script>
 
 </body>
