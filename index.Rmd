@@ -12,6 +12,7 @@ Hello! I'm **Christiana Odewumi**, a passionate student interested in data scien
 This is my personal website, where you can find my projects, resume, and professional details.
 
 ![](images/welcome.jpg)
-### link to page within the site
 
-- [View My Resume](Resume.html)
+
+## Link to page within the site 
+[Resume](resume.html)
