@@ -45,7 +45,8 @@ plot_ly(data = ny_noaa,  x = ~date, y = ~tmax, type = 'scatter', mode = 'lines')
   layout(title = "Daily Max Temperature Trend",
          xaxis = list(title = "Date"),
          yaxis = list(title = "Max Temperature (tmax)"))
-````
+```
+
 
 ```{r}
 sample_stations <- sample(unique(ny_noaa$id), 5)
