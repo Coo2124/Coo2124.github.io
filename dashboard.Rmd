@@ -20,7 +20,7 @@ library(janitor)
 ```{r}
 ny_noaa <- p8105.datasets::ny_noaa
 
-ny_noaa <- ny_noaa %>%
+ny_noaa_sample <- ny_noaa %>%
   filter(!is.na(tmax)) %>%
   sample_n(1000) 
 
@@ -30,40 +30,51 @@ ny_noaa <- ny_noaa %>%
 ### Scatter Plot: Precipitation vs Temperature
 
 ```{r}
-plot_ly(data = ny_noaa, x = ~tmax, y = ~prcp, type = 'scatter', mode = 'markers') %>%
+plot_ly(data = ny_noaa_sample, x = ~tmax, y = ~prcp, type = 'scatter', mode = 'markers') %>%
   layout(title = "Scatterplot: Max Temperature vs Precipitation",
-         xaxis = list(title = "Max Temperature (tmax)"),
-         yaxis = list(title = "Precipitation (prcp)"))
+         xaxis = list(title = "Max Temperature (°C)"),
+         yaxis = list(title = "Precipitation (mm)"))
 ```
 
 
-### Line Plot: Mean Temperature Over Time
+### Bar Plot
 
 ```{r}
 
-plot_ly(data = ny_noaa,  x = ~date, y = ~tmax, type = 'scatter', mode = 'lines') %>%
-  layout(title = "Daily Max Temperature Trend",
-         xaxis = list(title = "Date"),
-         yaxis = list(title = "Max Temperature (tmax)"))
+ny_noaa_sample <- ny_noaa_sample %>%
+  mutate(
+    tmax = as.numeric(tmax),    
+    tmin = as.numeric(tmin),    
+    month = month(date, label = TRUE) 
+  ) %>%
+  filter(!is.na(tmax))
+
+ny_noaa_summary <- ny_noaa_sample %>%
+  group_by(month) %>%
+  summarize(avg_tmax = mean(tmax, na.rm = TRUE))
+
+bar_plot <- plot_ly(ny_noaa_summary, x = ~month, y = ~avg_tmax, type = "bar", marker = list(color = "viridis")) %>%
+  layout(
+    title = "Average Maximum Temperature by Month",
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Average Max Temperature (°C)"),
+    barmode = "group"
+  )
+
+bar_plot
 ```
 
 
+### Box Plot
 ```{r}
-sample_stations <- sample(unique(ny_noaa$id), 5)
+library(forcats)
 
-temp_by_station <- ny_noaa %>%
-  filter(id %in% sample_stations)
-
-plot_ly(data = temp_by_station, 
-        x = ~id, y = ~tmax, 
-        type = 'box') %>%
-  layout(title = "Temperature Distribution by Station",
-         xaxis = list(title = "Station ID"),
-         yaxis = list(title = "Max Temperature (°C)"))
+ny_noaa_sample %>%
+  mutate(month = fct_reorder(month, tmax, .fun = median, na.rm = TRUE)) %>% 
+  plot_ly(y = ~tmax, x = ~month, color = ~month, type = "box", colors = "viridis") %>%
+  layout(
+    title = "Monthly Distribution of Maximum Temperature",
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Maximum Temperature (°C)"))
 
 ```
-
-
-
-
-
