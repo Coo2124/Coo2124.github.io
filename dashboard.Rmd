@@ -1,0 +1,68 @@
+---
+title: "NY NOAA Weather Data Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(plotly)
+library(p8105.datasets)
+library(dplyr)
+library(lubridate)
+library(tidyr)
+library(janitor)
+```
+
+# Load the NY NOAA dataset
+```{r}
+ny_noaa <- p8105.datasets::ny_noaa
+
+ny_noaa <- ny_noaa %>%
+  filter(!is.na(tmax)) %>%
+  sample_n(1000) 
+
+```
+
+
+### Scatter Plot: Precipitation vs Temperature
+
+```{r}
+plot_ly(data = ny_noaa, x = ~tmax, y = ~prcp, type = 'scatter', mode = 'markers') %>%
+  layout(title = "Scatterplot: Max Temperature vs Precipitation",
+         xaxis = list(title = "Max Temperature (tmax)"),
+         yaxis = list(title = "Precipitation (prcp)"))
+```
+
+
+### Line Plot: Mean Temperature Over Time
+
+```{r}
+
+plot_ly(data = ny_noaa,  x = ~date, y = ~tmax, type = 'scatter', mode = 'lines') %>%
+  layout(title = "Daily Max Temperature Trend",
+         xaxis = list(title = "Date"),
+         yaxis = list(title = "Max Temperature (tmax)"))
+````
+
+```{r}
+sample_stations <- sample(unique(ny_noaa$id), 5)
+
+temp_by_station <- ny_noaa %>%
+  filter(id %in% sample_stations)
+
+plot_ly(data = temp_by_station, 
+        x = ~id, y = ~tmax, 
+        type = 'box') %>%
+  layout(title = "Temperature Distribution by Station",
+         xaxis = list(title = "Station ID"),
+         yaxis = list(title = "Max Temperature (°C)"))
+
+```
+
+
+
+
+
