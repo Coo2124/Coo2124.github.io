@@ -1,0 +1,81 @@
+---
+title: "welcome to my website"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cerulean
+---
+
+## About me
+
+Hello! I'm **Christiana Odewumi**, a passionate student interested in data science and technology. 
+This is my personal website, where you can find my projects, resume, and professional details.
+
+Feel free to connect with me:  
+- **Email:** [coo2124@cumc.columbia.edu](mailto:coo2124@cumc.columbia.edu)  
+- **GitHub:** [Coo2124](https://github.com/Coo2124)  
+- **LinkedIn:** [Christiana Odewumi](https://www.linkedin.com/in/christianaodewumi/)  
+
+## Resume
+
+### **Education**
+- **Columbia University, Mailman School of Public Health**, New York, NY  
+  Master of Public Health (MPH), Epidemiology, Certificate in Applied Biostatistics and Public Health Data Science (May 2025)  
+  *Coursework:*  
+  - Design and Conduct of Observational Epidemiology  
+  - Analysis of Categorical Data  
+  - Applied Regression I  
+  - Data Science I  
+  - Relational Databases and SQL Programming  
+  - Statistical Computing with SAS and R  
+
+- **University of Massachusetts Boston**, Boston, MA  
+  Bachelor of Science: Biology (Pre-med), Minor: Communication, Magna Cum Laude (May 2023)  
+  Dean’s List 
+  
+  ### **Skills and Certifications**
+- **Analytic and Statistical Programming:**  
+  Proficient in R Studio, SAS, Stata, and SQL for data analysis and econometric modeling  
+- **Computer:**  
+  MS Office (Word, Excel, PowerPoint)  
+- **Certifications:**  
+  - HIPAA (patient privacy)  
+  - CITI (Human Subjects Research, Biomedical Research, and RCR)
+  
+  ## **Professional Experience**
+
+### **Columbia University Mailman School of Public Health**  
+- **Teaching Assistant** (Qualitative Foundations), August 2024 – Present  
+  - Provided academic support by grading assignments, homework, and exams for over 400 students.  
+  - Collaborated with faculty to enhance course content and structure in research methods.
+
+- **Research Assistant** (Epidemiology Department), January 2024 – Present  
+  - Conducted virtual nationwide tours, assessing over 100 street locations weekly to identify factors contributing to pedestrian safety.  
+  - Collaborated with 12 research teams to refine analytical approaches and prepare reports on urban infrastructure and public health.
+
+---
+
+### **Bassett Research Institute**, Cooperstown, NY  
+- **Data Analyst Intern**, June 2024 – August 2024  
+  - Processed and analyzed over 60,000 data points using logistic and multivariate regression models in R and SAS.  
+  - Created data visualizations and summaries showcasing demographic and behavioral trends.  
+  - Collaborated with researchers to ensure methodological rigor and presented key findings to inform public health interventions.  
+
+---
+
+### **Dana-Farber Cancer Institute**, Boston, MA  
+- **Dana-Farber/Harvard Intern**, May 2022 – August 2022  
+  - Facilitated 3 outreach sessions providing health education about nicotine use to over 150 community members.  
+  - Collaborated with local community organizations to discuss strategies for addressing nicotine use.
+
+---
+
+## **Posters and Presentations**
+- **Odewumi CO.** *Approaches used in Dana-Farber/Harvard Cancer Center and Faith-Based Community to Raise Awareness on Health Issues.*  
+  University of Massachusetts Boston, August 2022; Boston, MA.  
+
+- **Odewumi CO.** *Examining the Association Between Teen Suicidality and the Prevalence of Cyberbullying Among Adolescents (2011-2023).*  
+  Bassett Research Institute and Columbia University, November 2024; New York, NY.  
+
+
