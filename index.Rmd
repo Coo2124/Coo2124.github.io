@@ -21,6 +21,6 @@ Click the icons below to get in touch!
 [![Email](https://img.shields.io/badge/Email-D14836?logo=gmail&logoColor=white)](mailto:coo2124@cumc.columbia.edu)
 
 ![](images/welcome.jpg)
-## link to page within the site
+### link to page within the site
 
 - [View My Resume](Resume.html)

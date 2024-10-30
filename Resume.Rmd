@@ -7,9 +7,6 @@ output:
     theme: cerulean
 ---
 
-
-## This page  professional experiences 
-
 ### **Education**
 - **Columbia University, Mailman School of Public Health**, New York, NY  
   Master of Public Health (MPH), Epidemiology, Certificate in Applied Biostatistics and Public Health Data Science (May 2025)  
